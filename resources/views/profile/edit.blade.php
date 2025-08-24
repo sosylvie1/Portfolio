@@ -1,29 +1,104 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Profile') }}
-        </h2>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-profile-information-form')
-                </div>
-            </div>
+@section('title', 'Modifier mon profil')
 
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-password-form')
-                </div>
-            </div>
+@section('content')
 
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.delete-user-form')
+    <div class="py-8">
+        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
+            @if (session('status'))
+                <div class="mb-4 rounded-md bg-green-100 border border-green-200 p-3 text-green-800">
+                    {{ session('status') }}
                 </div>
+            @endif
+
+            <div class="bg-white shadow-sm sm:rounded-lg p-6 space-y-6">
+
+                <form method="POST" action="{{ route('profile.update') }}" class="space-y-6">
+                    @csrf
+                    @method('PATCH')
+
+                    {{-- Société --}}
+                    <div>
+                        <x-input-label for="company_name" value="Nom de la société" />
+                        <x-text-input id="company_name" name="company_name" type="text" class="block mt-1 w-full"
+                            :value="old('company_name', $user->company_name)" />
+                        <x-input-error :messages="$errors->get('company_name')" class="mt-2" />
+                    </div>
+
+                    {{-- Nom --}}
+                    <div>
+                        <x-input-label for="name" value="Nom" />
+                        <x-text-input id="name" name="name" type="text" class="block mt-1 w-full"
+                            :value="old('name', $user->name)" required />
+                        <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                    </div>
+
+                    {{-- Email --}}
+                    <div>
+                        <x-input-label for="email" value="Email" />
+                        <x-text-input id="email" name="email" type="email" class="block mt-1 w-full"
+                            :value="old('email', $user->email)" required />
+                        <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                    </div>
+
+                    {{-- Téléphone --}}
+                    <div>
+                        <x-input-label for="phone" value="Téléphone" />
+                        <x-text-input id="phone" name="phone" type="text" class="block mt-1 w-full"
+                            :value="old('phone', $user->phone)" />
+                        <x-input-error :messages="$errors->get('phone')" class="mt-2" />
+                    </div>
+                    {{-- Gestion cookies (uniquement visible dans profil) --}}
+                    <div class="mt-8 text-center">
+                        <a href="{{ route('cookie-consent.store') }}" class="text-sm text-blue-600 hover:underline">
+                            Gérer mes cookies
+                        </a>
+                    </div>
+
+                    {{-- Mot de passe (optionnel) --}}
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <x-input-label for="password" value="Nouveau mot de passe (optionnel)" />
+                            <x-text-input id="password" name="password" type="password" class="block mt-1 w-full" />
+                            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                        </div>
+
+                        <div>
+                            <x-input-label for="password_confirmation" value="Confirmer le mot de passe" />
+                            <x-text-input id="password_confirmation" name="password_confirmation" type="password"
+                                class="block mt-1 w-full" />
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        <x-primary-button>Enregistrer</x-primary-button>
+                        <a href="{{ route('profile.show') }}" class="text-sm text-gray-600 hover:underline">
+                            Annuler
+                        </a>
+                    </div>
+                </form>
+
+                {{-- Suppression du compte --}}
+                <hr>
+                <details class="cursor-pointer">
+                    <summary class="text-red-600 font-semibold">Supprimer mon compte</summary>
+                    <form method="POST" action="{{ route('profile.destroy') }}" class="mt-4 space-y-4">
+                        @csrf
+                        @method('DELETE')
+                        <div>
+                            <x-input-label for="delete_password" value="Mot de passe" />
+                            <x-text-input id="delete_password" name="password" type="password" class="block mt-1 w-full"
+                                required />
+                            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                        </div>
+                        <x-danger-button>Supprimer</x-danger-button>
+                    </form>
+                </details>
+
+
+
             </div>
         </div>
     </div>
-</x-app-layout>
+@endsection

@@ -3,6 +3,8 @@
     <div class="flex justify-center mb-6">
         <img src="{{ asset('images/logo.png') }}" alt="Sylvie Seguinaud" class="h-32 w-auto">
     </div>
+    @section('title', 'Connexion · ' . config('app.name'))
+
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
     @if (session('error'))

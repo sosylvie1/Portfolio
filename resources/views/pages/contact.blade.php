@@ -22,7 +22,7 @@
 @endif
 
 
-    <form action="{{ route('contact.send') }}" method="POST"
+    <form action="{{ route('contact.submit') }}" method="POST"
           class="bg-white/60 backdrop-blur-md border border-pink-100 shadow-lg rounded-xl p-6 space-y-4">
         @csrf
 

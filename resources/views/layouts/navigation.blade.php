@@ -3,13 +3,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
-                <!-- Logo -->
-                {{-- <div class="shrink-0 flex items-center">
-                    <a href="{{ route('accueil') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
-                    </a>
-                </div> --}}
-                <!-- Nouveau logo Sylvie Seguinaud -->
+                
                 <!-- Logo responsive -->
                 <div class="shrink-0 flex items-center space-x-2">
                     <a href="{{ route('accueil') }}" class="flex items-center">
@@ -18,13 +12,19 @@
                             title="Sylvie Seguinaud - Développeuse Web" class="h-16 w-auto">
 
                         {{-- Texte visible uniquement sur tablette/PC --}}
-                        <span class="hidden md:inline-block font-serif  text-lg text-gray-800 tracking-wide">
-                            Sylvie Seguinaud
-                        </span>
+                        <span class="name-logo">Sylvie Seguinaud</span>
+
 
                     </a>
                 </div>
 
+{{-- Exemple : Google Analytics uniquement si accepté --}}
+@isset($cookieConsent)
+    @if($cookieConsent === 'accepted')
+        {{-- Place ici ton script analytics --}}
+        {{-- <script>/* GA / Matomo / etc. */</script> --}}
+    @endif
+@endisset
 
 
 
@@ -42,9 +42,9 @@
                     </x-nav-link>
 
                     <x-nav-link :href="route('cv')" :active="request()->routeIs('cv')">
-                        Mon CV
+                         CV
                     </x-nav-link>
-                    <x-nav-link :href="route('contact')" :active="request()->routeIs('contact')">
+                    <x-nav-link :href="route('contact.show')" :active="request()->routeIs('contact')">
                         Contact
                     </x-nav-link>
 
@@ -76,7 +76,7 @@
                             {{-- Admin ou Dashboard --}}
                             @if (Auth::user()->role === 1)
                                 <x-dropdown-link :href="route('admin.dashboard')">
-                                    Admin
+                                    Tableau de bord
                                 </x-dropdown-link>
                             @else
                                 <x-dropdown-link :href="route('dashboard')">
@@ -84,7 +84,7 @@
                                 </x-dropdown-link>
                             @endif
 
-                            <x-dropdown-link :href="route('profile.edit')">
+                            <x-dropdown-link :href="route('profile.show')">
                                 Profil
                             </x-dropdown-link>
 
@@ -138,7 +138,7 @@
     Projets
 </x-nav-link>
 
-            <x-responsive-nav-link :href="route('contact')" :active="request()->routeIs('contact.show')">
+            <x-responsive-nav-link :href="route('contact.show')" :active="request()->routeIs('contact.show')">
                 Contact
             </x-responsive-nav-link>
         </div>
@@ -153,7 +153,7 @@
                 <div class="mt-3 space-y-1">
                     @if (Auth::user()->role === 1)
                         <x-responsive-nav-link :href="route('admin.dashboard')">
-                            Admin
+                           Tableau de bord
                         </x-responsive-nav-link>
                     @else
                         <x-responsive-nav-link :href="route('dashboard')">
@@ -162,7 +162,7 @@
                     @endif
 
                     <x-responsive-nav-link :href="route('profile.edit')">
-                        Profil
+                        Mon Profil
                     </x-responsive-nav-link>
 
                     <!-- Déconnexion -->

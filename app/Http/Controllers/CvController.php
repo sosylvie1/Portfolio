@@ -8,6 +8,7 @@ class CvController extends Controller
 
     public function __construct()
     {
+        // On met le CV dans storage/app/private/cv/
         $this->cvPath = storage_path('app/private/cv/CV_Sylvie_Seguinaud.pdf');
     }
 
@@ -28,16 +29,11 @@ class CvController extends Controller
         ]);
     }
 
-    // Téléchargement protégé (auth requis)
+    // Téléchargement réservé aux utilisateurs connectés
     public function download()
     {
-        $path = storage_path('app/private/cv/CV_Sylvie_Seguinaud.pdf');
+        abort_unless(file_exists($this->cvPath), 404, 'CV introuvable');
 
-        if (!file_exists($path)) {
-            abort(404, 'CV introuvable.');
-        }
-
-        return response()->download($path, 'CV_Sylvie_Seguinaud.pdf');
+        return response()->download($this->cvPath, 'CV_Sylvie_Seguinaud.pdf');
     }
 }
-

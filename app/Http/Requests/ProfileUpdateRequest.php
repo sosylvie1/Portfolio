@@ -16,6 +16,7 @@ class ProfileUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'company_name' => ['string', 'max:255'],
             'name' => ['required', 'string', 'max:255'],
             'email' => [
                 'required',
@@ -23,8 +24,11 @@ class ProfileUpdateRequest extends FormRequest
                 'lowercase',
                 'email',
                 'max:255',
-                Rule::unique(User::class)->ignore($this->user()->id),
+
+                
             ],
+            'phone' => ['nullable', 'string', 'max:20'], // ✅ ajout téléphone
+            Rule::unique(User::class)->ignore($this->user()->id),
         ];
     }
 }

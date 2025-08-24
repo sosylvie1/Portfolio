@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.name-logo {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600; /* plus gras */
+    font-size: 1.5rem; /* ajuste la taille */
+    letter-spacing: 0.5px; /* espace entre lettres */
+};
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+

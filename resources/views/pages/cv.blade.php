@@ -19,8 +19,7 @@
                         📥 Télécharger le CV
                     </a>
                 @else
-                    <a href="{{ route('cv.download') }}"
-                        class="px-4 py-2 rounded-lg bg-gray-800 text-white hover:bg-black shadow">
+                    <a href="{{ route('login') }}" class="px-4 py-2 rounded-lg bg-gray-800 text-white hover:bg-black shadow">
                         🔒 Connectez-vous pour télécharger
                     </a>
                 @endauth
@@ -107,8 +106,8 @@
                         <li>
                             <strong>Cheffe d'entreprise – USA & Mexique (2011 – 2020)</strong><br>
                             Arkay Beverages, Beyond Spirits, Licorzone SA de CV<br>
-                            Création et gestion de sociétés, production, e-commerce, réseaux
-                        </li>
+                            Création et gestion de sociétés, production, e-commerce, <br>
+                            responsable Service Client et Gestion Logistique – Retours Produits & Stocks Entrepôt
                         <li>
                             <strong>Office Manager – Cannes (1981 – 2003)</strong><br>
                             Agence maritime – Glemot SA, Camy SARL<br>

@@ -11,14 +11,13 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-    $middleware->alias([
-        'auth.message' => \App\Http\Middleware\AuthWithMessage::class,
-    ]);
-})
-
-    ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->alias([
+            'auth.message' => \App\Http\Middleware\AuthWithMessage::class,
+            'isAdmin'      => \App\Http\Middleware\IsAdmin::class, // ✅ ajout de l'alias
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
-    })->create();
+    })
+    ->create();
+
