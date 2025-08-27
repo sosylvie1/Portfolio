@@ -4,7 +4,7 @@
 <div class="max-w-3xl mx-auto py-12 px-6">
     <h1 class="text-3xl font-bold text-center mb-8">📩 Contact</h1>
 
-    @if (session('success'))
+    {{-- @if (session('success'))
     <div class="flex items-center gap-2 bg-green-100 border border-green-300 text-green-800 px-4 py-3 rounded mb-6 shadow text-center">
         <svg class="w-5 h-5 flex-shrink-0 text-green-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
@@ -19,10 +19,10 @@
             ⬅ Retour à l'accueil
         </a>
     </div>
-@endif
+@endif --}}
 
 
-    <form action="{{ route('contact.submit') }}" method="POST"
+    <form action="{{ route('contact.send') }}" method="POST"
           class="bg-white/60 backdrop-blur-md border border-pink-100 shadow-lg rounded-xl p-6 space-y-4">
         @csrf
 

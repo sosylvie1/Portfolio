@@ -1,24 +1,31 @@
 <?php
 
+
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes; // 👈 ajoute ça
 
 class ContactMessage extends Model
 {
-    // Table : contact_messages (convention Eloquent) → pas besoin de $table
-    // public $timestamps = true; // (implicite, donc inutile)
+    use HasFactory, SoftDeletes; // 👈 active les soft deletes
 
     protected $fillable = [
+        'user_id',
         'company_name',
         'name',
         'email',
         'subject',
         'message',
         'is_read',
+        'status',   // ✅ on autorise le statut
     ];
 
-    protected $casts = [
-        'is_read' => 'boolean',
-    ];
+    protected $dates = ['deleted_at']; // 👈 pour gérer la date de suppression
+    // Relation avec l’utilisateur
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

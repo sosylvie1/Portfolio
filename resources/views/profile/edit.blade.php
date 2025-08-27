@@ -14,6 +14,7 @@
 
             <div class="bg-white shadow-sm sm:rounded-lg p-6 space-y-6">
 
+                {{-- Formulaire mise à jour profil --}}
                 <form method="POST" action="{{ route('profile.update') }}" class="space-y-6">
                     @csrf
                     @method('PATCH')
@@ -48,13 +49,9 @@
                         <x-text-input id="phone" name="phone" type="text" class="block mt-1 w-full"
                             :value="old('phone', $user->phone)" />
                         <x-input-error :messages="$errors->get('phone')" class="mt-2" />
-                    </div>
-                    {{-- Gestion cookies (uniquement visible dans profil) --}}
-                    <div class="mt-8 text-center">
-                        <a href="{{ route('cookie-consent.store') }}" class="text-sm text-blue-600 hover:underline">
-                            Gérer mes cookies
-                        </a>
-                    </div>
+                    </div><br>
+                    <a href="{{ route('cookies.manage') }}">🍪 Gérer mes cookies</a>
+
 
                     {{-- Mot de passe (optionnel) --}}
                     <div class="grid md:grid-cols-2 gap-6">
@@ -73,11 +70,20 @@
 
                     <div class="flex items-center gap-3">
                         <x-primary-button>Enregistrer</x-primary-button>
-                        <a href="{{ route('profile.show') }}" class="text-sm text-gray-600 hover:underline">
+                        {{-- Retour au dashboard plutôt que profile.show --}}
+                        <a href="{{ route('dashboard') }}" class="text-sm text-gray-600 hover:underline">
                             Annuler
                         </a>
                     </div>
+                    {{-- Boutons retour (stack mobile / row desktop) --}}
+        <div class="flex flex-col sm:flex-row justify-center items-center gap-3 mt-6">
+            <a href="{{ route('dashboard') }}" 
+               class="w-full sm:w-auto text-center px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded">
+                ⬅ Retour à mon espace
+            </a>
                 </form>
+
+
 
                 {{-- Suppression du compte --}}
                 <hr>
@@ -95,8 +101,6 @@
                         <x-danger-button>Supprimer</x-danger-button>
                     </form>
                 </details>
-
-
 
             </div>
         </div>

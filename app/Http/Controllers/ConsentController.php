@@ -12,7 +12,7 @@ class ConsentController extends Controller
      * Enregistrer/mettre à jour le consentement et poser un cookie navigateur.
      * Reçoit: analytics (bool), marketing (bool). functional est toujours true.
      */
-   public function store(Request $request)
+    public function store(Request $request)
 {
     try {
         $data = $request->validate([
@@ -48,7 +48,7 @@ class ConsentController extends Controller
         $consent = $query->first();
         $consent ? $consent->update($values) : $consent = \App\Models\Consent::create(array_merge($attributes, $values));
 
-        // Cookie 1 an (minutes)
+        // Cookie 1 an
         $minutes = 60 * 24 * 365;
         $cookiePayload = [
             'functional' => true,
@@ -57,26 +57,25 @@ class ConsentController extends Controller
             'date'       => now()->toIso8601String(),
         ];
 
-        // IMPORTANT: sameSite en MINUSCULE 'lax'
         \Illuminate\Support\Facades\Cookie::queue(
             cookie(
                 'cookie_consent',
                 json_encode($cookiePayload),
                 $minutes,
-                '/',          // path
-                null,         // domain
-                false,        // secure (true en prod https)
-                false,        // httpOnly
-                false,        // raw
-                'lax'         // sameSite: 'lax' | 'strict' | 'none'
+                '/', null, false, false, false, 'lax'
             )
         );
 
-        return response()->json(['ok' => true, 'consent' => $cookiePayload]);
+        // 🔥 Ici on redirige après succès
+return redirect()->route('cookies.manage')
+    ->with('cookie_success', '✅ Vos préférences cookies ont bien été enregistrées.');
+
+
     } catch (\Throwable $e) {
-        // Log pour debug
         \Log::error('Consent error: '.$e->getMessage(), ['trace' => $e->getTraceAsString()]);
-        return response()->json(['ok' => false, 'message' => 'server_error'], 500);
+        return redirect()->route('cookies.manage')
+            ->with('cookie_error', '⚠️ Une erreur est survenue. Merci de réessayer.');
     }
 }
+
 }

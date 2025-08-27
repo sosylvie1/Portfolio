@@ -47,5 +47,15 @@ class User extends Authenticatable
             'cookie_consent_at' => 'datetime',
         ];
     }
+    public function cvDownloads()
+{
+    return $this->hasMany(CvDownload::class);
+}
+
+public function lastCvDownload()
+{
+    return $this->hasOne(CvDownload::class)->latestOfMany();
+}
+
     
 }

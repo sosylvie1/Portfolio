@@ -1,100 +1,72 @@
-@php
-    $consentCookie = request()->cookie('cookie_consent');
-@endphp
-
-@if (!$consentCookie)
-<div x-data="cookieBanner()" x-init="init()" class="fixed inset-x-0 bottom-0 z-50" aria-live="polite">
-  <div class="mx-auto max-w-5xl m-4 p-4 rounded-xl border bg-white shadow-lg">
-    <div class="md:flex md:items-start md:gap-6">
-      <div class="flex-1">
-        <h2 class="font-semibold text-lg mb-1">Cookies</h2>
-        <p class="text-sm text-gray-600">
-          Nous utilisons des cookies nécessaires au fonctionnement du site, ainsi que des cookies d’analyse et marketing (optionnels).
-          Vous pouvez accepter tout, refuser les non-essentiels ou personnaliser.
+@if (! Cookie::has('cookie_consent'))
+<div id="cookie-banner" class="fixed bottom-0 inset-x-0 bg-gray-900 text-white p-4 z-50">
+    <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="text-sm">
+            🍪 Ce site utilise des cookies pour améliorer votre expérience.
+            Vous pouvez accepter, refuser ou personnaliser vos choix.
         </p>
 
-        <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2" x-show="showOptions">
-          <label class="flex items-center gap-2">
-            <input type="checkbox" checked disabled class="rounded">
-            <span>Fonctionnels (obligatoires)</span>
-          </label>
-          <label class="flex items-center gap-2">
-            <input type="checkbox" x-model="analytics" class="rounded">
-            <span>Analytique</span>
-          </label>
-          <label class="flex items-center gap-2">
-            <input type="checkbox" x-model="marketing" class="rounded">
-            <span>Marketing</span>
-          </label>
-        </div>
-      </div>
+        <div class="flex gap-2">
+            {{-- Tout accepter --}}
+            <form method="POST" action="{{ route('cookie-consent.store') }}">
+                @csrf
+                <input type="hidden" name="analytics" value="1">
+                <input type="hidden" name="marketing" value="1">
+                <button type="submit" class="px-3 py-1 bg-green-600 rounded hover:bg-green-700">
+                    ✅ Tout accepter
+                </button>
+            </form>
 
-      <div class="mt-4 md:mt-0 flex flex-wrap gap-2">
-        <button @click="acceptAll" class="px-4 py-2 rounded-lg bg-gray-900 text-white hover:opacity-90">
-          Tout accepter
-        </button>
-        <button @click="rejectNonEssential" class="px-4 py-2 rounded-lg border hover:bg-gray-50">
-          Tout refuser (sauf nécessaires)
-        </button>
-        <button @click="toggleOptions" class="px-4 py-2 rounded-lg border hover:bg-gray-50">
-          Personnaliser
-        </button>
-      </div>
+            {{-- Tout refuser --}}
+            <form method="POST" action="{{ route('cookie-consent.store') }}">
+                @csrf
+                <input type="hidden" name="analytics" value="0">
+                <input type="hidden" name="marketing" value="0">
+                <button type="submit" class="px-3 py-1 bg-red-500 rounded hover:bg-red-600">
+                    ❌ Tout refuser
+                </button>
+            </form>
+
+            {{-- Personnaliser --}}
+            <button onclick="document.getElementById('cookie-modal').classList.remove('hidden')"
+                class="px-3 py-1 bg-yellow-500 rounded hover:bg-yellow-600">
+                ⚙️ Personnaliser
+            </button>
+        </div>
     </div>
-  </div>
 </div>
 
-<script>
-function cookieBanner() {
-  return {
-    analytics: false,
-    marketing: false,
-    showOptions: false,
+{{-- MODAL Personnalisation --}}
+<div id="cookie-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white text-gray-800 p-6 rounded-lg shadow-lg w-96">
+        <h2 class="text-lg font-bold mb-4">Paramètres des cookies</h2>
+        <form method="POST" action="{{ route('cookie-consent.store') }}">
+            @csrf
+            <div class="space-y-3">
+                <label class="flex items-center gap-2">
+                    <input type="checkbox" checked disabled>
+                    <span>Cookies fonctionnels (toujours actifs)</span>
+                </label>
+                <label class="flex items-center gap-2">
+                    <input type="checkbox" name="analytics" value="1">
+                    <span>Cookies analytiques</span>
+                </label>
+                <label class="flex items-center gap-2">
+                    <input type="checkbox" name="marketing" value="1">
+                    <span>Cookies marketing</span>
+                </label>
+            </div>
 
-    init() {},
-
-    toggleOptions() { this.showOptions = !this.showOptions; },
-
-    post(payload) {
-      return fetch("{{ route('cookie-consent.store') }}", {
-        method: 'POST',
-        credentials: 'same-origin', // IMPORTANT pour la session/CSRF
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest',
-          'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').getAttribute('content'),
-        },
-        body: JSON.stringify(payload)
-      }).then(async (r) => {
-        if (!r.ok) {
-          const text = await r.text();
-          console.error('POST /cookie-consent failed', r.status, text);
-          throw new Error('http_' + r.status);
-        }
-        return r.json();
-      });
-    },
-
-    acceptAll() {
-      this.analytics = true; this.marketing = true;
-      this.saveAndHide();
-    },
-
-    rejectNonEssential() {
-      this.analytics = false; this.marketing = false;
-      this.saveAndHide();
-    },
-
-    saveAndHide() {
-      this.post({ analytics: this.analytics, marketing: this.marketing })
-        .then(() => {
-          // Supprime proprement le composant Alpine
-          this.$root.remove();
-        })
-        .catch(() => alert("Erreur lors de l'enregistrement du consentement"));
-    }
-  }
-}
-</script>
+            <div class="mt-4 flex justify-between">
+                <button type="button" onclick="document.getElementById('cookie-modal').classList.add('hidden')"
+                    class="px-3 py-1 bg-gray-400 rounded hover:bg-gray-500">
+                    Annuler
+                </button>
+                <button type="submit" class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700">
+                    Enregistrer
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 @endif

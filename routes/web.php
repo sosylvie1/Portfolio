@@ -1,21 +1,32 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
+// Contrôleurs publics
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ProjectController; // ← public (statique)
+use App\Http\Controllers\ProjectController;   // projets côté public (portfolio)
 use App\Http\Controllers\CvController;
 use App\Http\Controllers\ConsentController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserMessageController;
 
-// Admin
+// Contrôleurs admin
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ProjectController as AdminProjectController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ContactAdminController;
 
-// 🔓 Public  Footer
+/*
+|--------------------------------------------------------------------------
+| Routes PUBLIQUES
+|--------------------------------------------------------------------------
+*/
+Route::get('/accueil', [HomeController::class, 'accueil'])->name('accueil');
+Route::get('/a-propos', [HomeController::class, 'aPropos'])->name('a-propos');
+
+// 🔓 Public Footer
 Route::redirect('/', '/accueil');
 Route::get('/confidentialite', function () {
     return view('pages.confidentialite');
@@ -29,58 +40,98 @@ Route::get('/cgu', function () {
     return view('pages.cgu');
 })->name('cgu');
 
-
-Route::get('/accueil', [HomeController::class, 'accueil'])->name('accueil');
-Route::get('/a-propos', [HomeController::class, 'aPropos'])->name('a-propos');
-
-// ✅ UNE SEULE route publique /projets avec UN SEUL nom
+// Projets côté public
 Route::get('/projets', [ProjectController::class, 'index'])->name('projets.index');
 
-// Contact (UNE seule paire de routes)
-Route::get('/contact', [ContactController::class, 'show'])->name('contact.show');
-Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
+// Formulaire de contact public
+Route::get('/contact', [ContactController::class, 'showForm'])->name('contact.show');
+Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
 
+// --- CV PUBLIC ---
+Route::get('/cv-public', [CvController::class, 'show'])->name('cv.public');   // page publique
+Route::get('/cv/preview', [CvController::class, 'preview'])->name('cv.preview'); // aperçu PDF public
 
-// CV
-Route::get('/cv', [CvController::class, 'show'])->name('cv'); // public
-Route::get('/cv/preview', [CvController::class, 'preview'])->name('cv.preview');
-Route::get('/cv/telecharger', [CvController::class, 'download'])
-    ->middleware('auth.message')->name('cv.download');
+// Bandeau RGPD (affichage et soumission)
+Route::post('/cookie-consent', [ConsentController::class, 'store'])->name('cookie-consent.store');
 
-// Cookie consent
-Route::post('/cookie-consent', [ConsentController::class, 'store'])
-    ->name('cookie-consent.store');
+Route::get('/cookies', function () {
+    return view('pages.cookies'); // page à créer
+})->name('cookies.manage');
 
-// 👤 UTILISATEUR CONNECTÉ
+/*
+|--------------------------------------------------------------------------
+| Routes UTILISATEUR CONNECTÉ
+|--------------------------------------------------------------------------
+*/
 Route::middleware(['auth'])->group(function () {
-    // une seule définition de /dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    
-    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');   // lecture seule
-    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit'); // édition
+    // Profil
+    Route::get('/profile/show', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Messages utilisateur
+    |--------------------------------------------------------------------------
+    */
+    
+        Route::get('/envoyes', [UserMessageController::class, 'sent'])->name('messages.envoyes');
+        Route::get('/recus', [UserMessageController::class, 'received'])->name('messages.recus');
+        Route::get('/supprimes', [UserMessageController::class, 'deleted'])->name('messages.supprimes');
+
+        Route::get('/{id}', [UserMessageController::class, 'show'])->name('messages.show');
+        Route::delete('/{id}', [UserMessageController::class, 'destroy'])->name('messages.destroy');
+
+        // ✅ routes soft delete
+        Route::patch('/{id}/restore', [UserMessageController::class, 'restore'])->name('messages.restore');
+        Route::delete('/{id}/force', [UserMessageController::class, 'forceDelete'])->name('messages.forceDelete');
+    
+
+    // --- CV UTILISATEUR CONNECTÉ ---
+    Route::get('/cv', [CvController::class, 'index'])->name('user.cv'); // suivi dans dashboard
+    Route::get('/cv/telecharger', [CvController::class, 'download'])
+        ->middleware('auth.message')
+        ->name('cv.download');
 });
 
+/*
+|--------------------------------------------------------------------------
+| Routes ADMIN (Sylvie uniquement)
+|--------------------------------------------------------------------------
+|
+| ⚠️ Ces routes nécessitent un middleware `is_admin`
+| (à implémenter : il vérifie si user->role == 'admin').
+|
+*/
+Route::middleware(['auth', 'is_admin'])->prefix('admin')->name('admin.')->group(function () {
+    // Dashboard admin
+    Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
 
-
-
-// 🧑‍💼 ADMIN (Option B : page admin basée sur la liste statique)
-Route::middleware(['auth','isAdmin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-
-    // Page admin qui REUTILISE la liste statique
-    Route::get('/projets', [AdminProjectController::class, 'index'])->name('projets.index');
-
-    Route::resource('/users', UserController::class);
-
-    // Messages de contact
+    // Gestion messages reçus
     Route::get('/contacts', [ContactAdminController::class, 'index'])->name('contacts.index');
     Route::get('/contacts/{message}', [ContactAdminController::class, 'show'])->name('contacts.show');
-    Route::put('/contacts/{message}/mark', [ContactAdminController::class, 'mark'])->name('contacts.mark');
+    Route::post('/contacts/{message}/reply', [ContactAdminController::class, 'reply'])->name('contacts.reply');
     Route::delete('/contacts/{message}', [ContactAdminController::class, 'destroy'])->name('contacts.destroy');
+
+    // Gestion utilisateurs
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+
+    // Gestion projets (CRUD)
+    Route::get('/projets', [AdminProjectController::class, 'index'])->name('projets.index');
+    Route::get('/projets/create', [AdminProjectController::class, 'create'])->name('projets.create');
+    Route::post('/projets', [AdminProjectController::class, 'store'])->name('projets.store');
+    Route::get('/projets/{id}', [AdminProjectController::class, 'show'])->name('projets.show');
+    Route::get('/projets/{id}/edit', [AdminProjectController::class, 'edit'])->name('projets.edit');
+    Route::put('/projets/{id}', [AdminProjectController::class, 'update'])->name('projets.update');
+    Route::delete('/projets/{id}', [AdminProjectController::class, 'destroy'])->name('projets.destroy');
+
+    // Statistiques admin
+    Route::get('/stats', [AdminController::class, 'stats'])->name('stats');
 });
 
-// 🔐 Auth (Breeze)
 require __DIR__.'/auth.php';

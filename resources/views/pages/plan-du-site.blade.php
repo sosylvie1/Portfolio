@@ -15,7 +15,7 @@
                 <li><a href="{{ route('accueil') }}" class="text-blue-600 hover:underline">Accueil</a></li>
                 <li><a href="{{ route('a-propos') }}" class="text-blue-600 hover:underline">À propos</a></li>
                 <li><a href="{{ route('projets.index') }}" class="text-blue-600 hover:underline">Projets</a></li>
-                <li><a href="{{ route('cv') }}" class="text-blue-600 hover:underline">CV</a></li>
+                <li><a href="{{ route('user.cv') }}" class="text-blue-600 hover:underline">CV</a></li>
                 <li><a href="{{ route('contact.submit') }}" class="text-blue-600 hover:underline">Contact</a></li>
             </ul>
         </div>

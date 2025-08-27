@@ -1,46 +1,45 @@
-@extends('layouts.app')
+@extends('layouts.admin')
+
+@section('title', 'Détail message')
 
 @section('content')
-<div class="max-w-3xl mx-auto py-10 px-4">
-    <a href="{{ url()->previous() }}" class="text-sm underline">← Retour</a>
+    <div class="max-w-3xl mx-auto">
+        <div class="bg-white shadow rounded-lg p-6">
+            <h1 class="text-2xl font-bold mb-4">📩 Message de {{ $message->name }}</h1>
 
-    <div class="bg-white/70 border border-gray-100 rounded-2xl shadow p-6 mt-4 space-y-4">
-        <div class="flex items-start justify-between">
-            <h1 class="text-2xl font-bold">Message de {{ $message->name }}</h1>
-            <span class="text-sm text-gray-500">{{ $message->created_at->format('d/m/Y H:i') }}</span>
-        </div>
+            <p><strong>Email :</strong> {{ $message->email }}</p>
+            <p><strong>Sujet :</strong> {{ $message->subject ?? '—' }}</p>
+            <p><strong>Date :</strong> {{ $message->created_at->format('d/m/Y H:i') }}</p>
 
-        <div class="grid md:grid-cols-2 gap-4">
-            <div>
-                <div class="text-xs uppercase text-gray-500">Email</div>
-                <a href="mailto:{{ $message->email }}" class="underline">{{ $message->email }}</a>
+            <hr class="my-4">
+
+            <div class="prose">
+                {!! nl2br(e($message->message)) !!}
             </div>
-            <div>
-                <div class="text-xs uppercase text-gray-500">Sujet</div>
-                <div>{{ $message->subject ?: '—' }}</div>
-            </div>
-        </div>
 
-        <div>
-            <div class="text-xs uppercase text-gray-500 mb-1">Message</div>
-            <div class="whitespace-pre-line leading-relaxed">{{ $message->message }}</div>
-        </div>
+            <hr class="my-6">
 
-        <div class="flex items-center justify-end gap-2 pt-4">
-            <form action="{{ route('admin.contacts.mark', $message) }}" method="POST">
-                @csrf @method('PUT')
-                <button class="px-4 py-2 rounded border">
-                    {{ $message->is_read ? 'Marquer non lu' : 'Marquer lu' }}
+            {{-- Formulaire de réponse --}}
+            <h2 class="text-xl font-semibold mb-2">Répondre à {{ $message->name }}</h2>
+            <form method="POST" action="{{ route('admin.contacts.reply', $message->id) }}">
+                @csrf
+                <textarea name="reply" rows="4" class="w-full border rounded p-2 mb-3" required></textarea>
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                    ✉️ Envoyer la réponse
                 </button>
             </form>
-            <form action="{{ route('admin.contacts.destroy', $message) }}" method="POST"
-                  onsubmit="return confirm('Supprimer ce message ?');">
-                @csrf @method('DELETE')
-                <button class="px-4 py-2 rounded bg-red-50 border border-red-200 text-red-700">
-                    Supprimer
-                </button>
-            </form>
+
+            <div class="flex justify-between mt-6">
+                <a href="{{ route('admin.contacts.index') }}" class="text-gray-600 hover:underline">
+                    ← Retour aux messages
+                </a>
+                <form action="{{ route('admin.contacts.destroy', $message->id) }}" method="POST"
+                      onsubmit="return confirm('Supprimer définitivement ce message ?')">
+                    @csrf
+                    @method('DELETE')
+                    <button class="text-red-600 hover:underline">Supprimer</button>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 @endsection

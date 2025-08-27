@@ -15,7 +15,9 @@ class DashboardController extends Controller
             return redirect()->route('admin.dashboard');
         }
 
-        // Sinon → vue utilisateur
-        return view('user.dashboard');
+        // ✅ Toujours définir la variable (même si null)
+        $lastCvDownload = $user->lastCvDownload;
+
+        return view('user.dashboard', compact('user', 'lastCvDownload'));
     }
 }

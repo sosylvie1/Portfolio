@@ -40,40 +40,61 @@
 
         {{-- Contenu principal --}}
         <main class="py-10 px-4">
+
+            {{-- 🔥 Nouveau système de messages flash --}}
+            @if (session('cookie_success'))
+                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+                    {{ session('cookie_success') }}
+                </div>
+            @endif
+
+            @if (session('cookie_error'))
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                    {{ session('cookie_error') }}
+                </div>
+            @endif
+
+            @if (session('success'))
+                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+                    {{ session('success') }}
+                </div>
+                
+                <a href="{{ route('accueil') }}"
+           class="inline-block mt-2 px-4 py-2 bg-pink-500 text-white rounded-lg shadow hover:bg-pink-600 transition">
+            ⬅ Retour à l'accueil
+        </a>
+            @endif
+            
+
+            @if (session('error'))
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                    {{ session('error') }}
+                </div>
+                
+            @endif
+
+            
+
             @yield('content')
 
-            {{-- Petit lien pour re-gérer les cookies (peut être déplacé en footer)
-            <div class="mt-10 text-center">
-                <button class="text-xs text-gray-600 underline"
-                    onclick="document.cookie='cookie_consent=; path=/; Max-Age=0'; location.reload();">
-                    Gérer mes cookies
-                </button>
-            </div> --}}
         </main>
     </div>
-        
 
     {{-- Footer global --}}
     <footer class="bg-gray-100 border-t mt-12">
-        <div class="max-w-7xl mx-auto px-4 py-6 flex flex-col md:flex-row justify-between items-center text-sm text-gray-600">
+        <div
+            class="max-w-7xl mx-auto px-4 py-6 flex flex-col md:flex-row justify-between items-center text-sm text-gray-600">
 
             {{-- © --}}
             <p>&copy; {{ date('Y') }} Sylvie Seguinaud — Portfolio</p>
 
             {{-- Navigation footer --}}
-                    
-                {{-- Pages légales --}}
-                <a href="{{ route('cgu') }}" class="hover:underline">CGU</a>
-                <a href="{{ route('confidentialite') }}" class="hover:underline">Confidentialité</a>
-                <a href="{{ route('plan-du-site') }}" class="hover:underline">Plan du site</a>
-            </nav>
+            <a href="{{ route('cgu') }}" class="hover:underline">CGU</a>
+            <a href="{{ route('confidentialite') }}" class="hover:underline">Confidentialité</a>
+            <a href="{{ route('plan-du-site') }}" class="hover:underline">Plan du site</a>
         </div>
     </footer>
-</body>
 
-
-
-    {{-- Bandeau cookies (doit être dans le body) --}}
     <x-cookie-banner />
 
     {{-- Alpine via CDN si non chargé dans app.js --}}
@@ -82,14 +103,7 @@
     {{-- Scripts non essentiels : ex. Google Analytics UNIQUEMENT si accepté --}}
     @php $cookieConsent = request()->cookie('cookie_consent'); @endphp
     @if ($cookieConsent === 'accepted')
-        <!-- Google Analytics (remplace par ton ID) -->
-        {{-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-XXXXXXXXXX');
-        </script> --}}
+        {{-- <script>Google Analytics…</script> --}}
     @endif
 
     {{-- SYNC AUTO : si connectée + cookie présent + DB vide -> on enregistre en base --}}
@@ -101,8 +115,7 @@
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').getAttribute(
-                                'content'),
+                            'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').getAttribute('content'),
                             'Accept': 'application/json',
                         },
                         body: JSON.stringify({

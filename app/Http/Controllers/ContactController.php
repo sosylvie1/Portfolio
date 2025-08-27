@@ -3,20 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\ContactMessage;               // ← importe le modèle
-use Illuminate\Support\Facades\Mail;         // ← si tu envoies un email
-use App\Mail\ContactReceived;                // ← si tu utilises le Mailable
+use App\Models\ContactMessage;
 
 class ContactController extends Controller
 {
-    // GET /contact : affiche le formulaire
-    public function show()
-{
-    return view('pages.contact');
-}
+    /**
+     * Formulaire public de contact
+     */
+    public function showForm()
+    {
+        return view('pages.contact');
+    }
 
-
-    // POST /contact : traite l’envoi
+    /**
+     * Traitement envoi formulaire (public ou user connecté)
+     */
     public function send(Request $request)
     {
         $validated = $request->validate([
@@ -27,21 +28,79 @@ class ContactController extends Controller
             'message'      => 'required|string|min:10',
         ]);
 
-        // Enregistre en base
-        ContactMessage::create($validated);
+        ContactMessage::create([
+    'company_name' => $validated['company_name'],
+    'name'         => $validated['name'],
+    'email'        => $validated['email'],
+    'subject'      => $validated['subject'] ?? null,
+    'message'      => $validated['message'],
+    'user_id'      => auth()->check() ? auth()->id() : null, // ✅ uniquement si connecté
+]);
 
-        // Optionnel : envoi email à l’admin
-        // Mail::to(config('mail.from.address'))->send(new ContactReceived($validated));
 
-        return back()->with(
-    'success',
-    '✅ Votre message a bien été envoyé. Je vous répondrai dans les plus brefs délais.'
-);
-
+        return back()->with('success', '✅ Votre message a bien été envoyé.');
     }
+
+    /**
+     * Voir un message
+     */
+    public function show($id)
+    {
+        $message = ContactMessage::where('user_id', auth()->id())->findOrFail($id);
+        return view('user.messages.show', compact('message'));
+    }
+
+    /**
+     * 📤 Messages envoyés par l’utilisateur
+     */
+    public function sent()
+    {
+        $messages = ContactMessage::where('user_id', auth()->id())
+            ->where('status', 'sent')   // ✅ filtre sur "sent"
+            ->latest()
+            ->get();
+
+        return view('user.messages.sent', compact('messages'));
+    }
+
+    /**
+     * 📥 Messages reçus par l’utilisateur (ex. réponses admin)
+     */
+    public function received()
+    {
+        $messages = ContactMessage::where('user_id', auth()->id())
+            ->where('status', 'received')   // ✅ filtre sur "received"
+            ->latest()
+            ->get();
+
+        return view('user.messages.received', compact('messages'));
+    }
+
+    /**
+     * 🗑️ Messages supprimés (corbeille)
+     */
+    /**
+ * 🗑️ Mettre un message à la corbeille (Soft Delete)
+ */
+public function destroy($id)
+{
+    $message = ContactMessage::where('user_id', auth()->id())->findOrFail($id);
+    $message->delete(); // ✅ Soft delete
+
+    return back()->with('success', 'Message déplacé dans la corbeille.');
 }
 
-        
+/**
+ * 🗑️ Voir les messages supprimés (corbeille)
+ */
+public function deleted()
+{
+    $messages = ContactMessage::onlyTrashed() // ✅ uniquement ceux supprimés
+        ->where('user_id', auth()->id())
+        ->latest()
+        ->get();
 
-       
+    return view('user.messages.deleted', compact('messages'));
+}
 
+}
