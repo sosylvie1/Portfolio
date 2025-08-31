@@ -12,8 +12,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/accueil'; // ✅ redirection après login
-
+    public const HOME = '/dashboard';   // ✅ redirection par défaut après login
 
     /**
      * Définit comment les routes sont chargées dans l'application.

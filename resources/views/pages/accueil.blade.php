@@ -20,10 +20,26 @@
 
                 <p>Le passage de la soixantaine et les bouleversements liés au Covid ont rendu le retour à l'emploi difficile. J'ai alors choisi de me reconvertir dans le développement web à travers une formation intensive de 13 mois.</p>
 
-                <p>Ce site n'est pas seulement un portfolio de code : c'est un carnet de voyage, un miroir de mes projets, de mes expériences et de mes passions. Vous y trouverez mes réalisations, mes compétences et des morceaux choisis de mon parcours de vie.</p>
-            </div>
+               <p>
+Ce site n’est pas seulement un portfolio technique : c’est aussi le reflet d’un parcours de vie riche en expériences internationales. 
+De Dubaï aux États-Unis, du Mexique à la Colombie, en passant par les îles Caïmans, j’ai voyagé, vécu et travaillé à travers le monde. 
+Au fil des années, j’ai accumulé plus de 30 000 photos (merci Google photos) — un véritable trésor de souvenirs — et il a été difficile d’en choisir quelques-unes seulement pour être représentatives de ce voyage de vie. 
+Vous y découvrirez mes projets, mes compétences, mais aussi les traces de ce cheminement professionnel et personnel.
+</p>
 
-            <div class="flex flex-col sm:flex-row gap-4 mt-6">
+
+            </div>
+            {{-- Lien illustré vers la page voyages --}}
+            <div class="flex justify-center mt-6">
+    <a href="{{ route('voyages.index') }}">
+        <img src="{{ asset('images/googlemap.png') }}" 
+             alt="Découvrir mes voyages" 
+             class="w-40 sm:w-52 rounded-lg shadow-lg hover:opacity-90 transition">
+    </a>
+</div>
+
+
+            {{-- <div class="flex flex-col sm:flex-row gap-4 mt-6">
                 <a href="{{ route('projets.index') }}"
                    class="block w-full sm:w-auto bg-pink-600 hover:bg-pink-700 text-white px-6 py-3 rounded-lg font-medium shadow transition text-center">
                     Découvrir mes projets
@@ -33,7 +49,7 @@
                    class="block w-full sm:w-auto bg-gray-800 hover:bg-gray-900 text-white px-6 py-3 rounded-lg font-medium shadow transition text-center">
                     Télécharger mon CV
                 </a> --}}
-            </div>
+            {{-- </div> --}} 
         </div>
         {{-- Image portrait --}}
         <div class="md:w-1/2">

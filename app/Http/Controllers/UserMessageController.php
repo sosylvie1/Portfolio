@@ -51,30 +51,39 @@ class UserMessageController extends Controller
     /**
      * 👁️ Voir un message
      */
-    public function show($id)
-    {
-        $message = ContactMessage::where(function ($q) {
+   public function show($id)
+{
+    $message = ContactMessage::withTrashed()
+        ->where('id', $id)
+        ->where(function ($q) {
             $q->where('user_id', Auth::id())
               ->orWhere('recipient_id', Auth::id());
-        })->findOrFail($id);
+        })
+        ->firstOrFail();
 
-        return view('user.messages.show', compact('message'));
-    }
+    return view('user.messages.show', compact('message'));
+}
+
+
 
     /**
      * ❌ Supprimer un message (soft delete)
      */
     public function destroy($id)
-    {
-        $message = ContactMessage::where(function ($q) {
+{
+    $message = ContactMessage::where('id', $id)
+        ->where(function ($q) {
             $q->where('user_id', Auth::id())
               ->orWhere('recipient_id', Auth::id());
-        })->findOrFail($id);
+        })
+        ->firstOrFail();
 
-        $message->delete();
+    $message->delete();
 
-        return redirect()->back()->with('success', 'Message supprimé avec succès.');
-    }
+    return redirect()->route('messages.supprimes')
+        ->with('success', 'Message supprimé avec succès.');
+}
+
     /**
  * 🔄 Restaurer un message supprimé (soft delete)
  */

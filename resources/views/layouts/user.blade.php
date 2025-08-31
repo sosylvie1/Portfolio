@@ -65,7 +65,7 @@
         </aside>
 
         {{-- Contenu principal --}}
-        <main class="flex-1 p-6 ml-0 lg:ml-64">
+        <main class="flex-1 p-6">
             {{-- Bouton burger mobile --}}
             <div class="lg:hidden mb-4">
                 <button @click="sidebarOpen = !sidebarOpen" class="px-3 py-2 bg-gray-200 rounded shadow">

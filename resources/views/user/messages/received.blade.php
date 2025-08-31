@@ -1,27 +1,40 @@
 @extends('layouts.user')
 
-@section('title', 'Messages reçus')
-
 @section('content')
-<div class="bg-white p-6 rounded-lg shadow">
-    <h1 class="text-2xl font-bold mb-4">📥 Mes messages reçus</h1>
+    <h1 class="text-2xl font-bold mb-6">📥 Messages reçus</h1>
 
-    @if ($messages->isEmpty())
-        <p class="text-gray-600">Vous n'avez encore reçu aucun message.</p>
-    @else
-        <ul class="space-y-4">
-            @foreach ($messages as $message)
-                <li class="p-4 bg-gray-50 rounded border shadow-sm">
-                    <p><strong>De :</strong> {{ $message->user->name ?? $message->email }}</p>
-                    <p><strong>Sujet :</strong> {{ $message->subject ?? '(Sans sujet)' }}</p>
-                    <p class="text-gray-700 mt-2">{{ Str::limit($message->message, 100) }}</p>
-                    <p class="text-sm text-gray-500 mt-1">
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @forelse($messages as $message)
+            <div class="bg-white rounded-xl shadow-md hover:shadow-lg transition p-4 flex flex-col justify-between">
+                <!-- Sujet + Date -->
+                <div>
+                    <h2 class="text-lg font-semibold text-gray-800 mb-2">
+                        {{ $message->subject }}
+                    </h2>
+                    <p class="text-sm text-gray-500">
                         Reçu le {{ $message->created_at->format('d/m/Y H:i') }}
                     </p>
-                    <a href="{{ route('messages.show', $message->id) }}" class="text-blue-600 hover:underline">👁️ Voir</a>
-                </li>
-            @endforeach
-        </ul>
-    @endif
-</div>
+                </div>
+
+                <!-- Actions -->
+                <div class="mt-4 flex justify-between">
+                    <a href="{{ route('messages.show', $message->id) }}" 
+                       class="inline-flex items-center px-3 py-1 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition">
+                        👀 Voir
+                    </a>
+
+                    <form action="{{ route('messages.destroy', $message->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" 
+                                class="inline-flex items-center px-3 py-1 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition">
+                            🗑️ Supprimer
+                        </button>
+                    </form>
+                </div>
+            </div>
+        @empty
+            <p class="text-gray-500 col-span-full text-center">Aucun message reçu.</p>
+        @endforelse
+    </div>
 @endsection

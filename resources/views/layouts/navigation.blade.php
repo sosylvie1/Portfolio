@@ -48,11 +48,17 @@
                         </x-slot>
                         <x-slot name="content">
                             @if (Auth::user()->role === 1)
+                                {{-- ✅ correction : admin → admin.dashboard --}}
                                 <x-dropdown-link :href="route('admin.dashboard')">Tableau de bord</x-dropdown-link>
                             @else
+                                {{-- ✅ correction : user normal → dashboard --}}
                                 <x-dropdown-link :href="route('dashboard')">Mon espace</x-dropdown-link>
                             @endif
+
+                            {{-- ✅ correction : route du profil cohérente --}}
                             <x-dropdown-link :href="route('profile.show')">Profil</x-dropdown-link>
+
+                            {{-- ✅ bouton logout --}}
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <x-dropdown-link :href="route('logout')"
@@ -67,6 +73,7 @@
             <!-- Liens invités -->
             @guest
                 <div class="hidden sm:flex sm:items-center sm:ms-6 space-x-4">
+                    {{-- ✅ correction : visible uniquement pour les invités --}}
                     <a href="{{ route('login') }}" class="text-sm text-gray-700 hover:underline">Connexion</a>
                     <a href="{{ route('register') }}" class="text-sm text-gray-700 hover:underline">Inscription</a>
                 </div>
@@ -128,6 +135,7 @@
         @guest
             <div class="pt-4 pb-1 border-t border-gray-200">
                 <div class="mt-3 space-y-1 px-4">
+                    {{-- ✅ correction : visible uniquement pour les invités --}}
                     <a href="{{ route('login') }}" class="text-gray-700 block hover:underline">Connexion</a>
                     <a href="{{ route('register') }}" class="text-gray-700 block hover:underline">Inscription</a>
                 </div>
