@@ -15,13 +15,15 @@
         pendant ma formation, pour un aperçu rapide de <span class="font-semibold text-pink-500">mon univers</span>.
     </h2>
 </div>
-{{-- Moments cultes (à placer sous le titre "Mes Projets") --}}
+{{-- Moments cultes regroupés dans une grande card --}}
 <section x-data="{ open: true }"
          class="relative overflow-hidden rounded-2xl border border-pink-200/70 bg-white/70 backdrop-blur px-5 sm:px-8 py-6 mb-10">
+
   {{-- Bandeau fun --}}
   <div class="absolute inset-x-0 -top-8 h-16 bg-gradient-to-r from-pink-200 via-fuchsia-200 to-sky-200 opacity-40 blur-2xl pointer-events-none"></div>
 
-  <header class="relative flex items-center justify-between gap-3">
+  {{-- Header --}}
+  <header class="relative flex items-center justify-between gap-3 mb-6">
     <h3 class="text-lg sm:text-xl font-bold text-gray-800 flex items-center gap-2">
       🎬 Moments cultes
     </h3>
@@ -30,38 +32,57 @@
             x-text="open ? 'Masquer' : 'Afficher'"></button>
   </header>
 
-  <div class="relative mt-4 space-y-5" x-show="open" x-transition>
-    {{-- Citations / punchlines --}}
-    <ul class="space-y-2.5 text-sm sm:text-base text-gray-700 leading-relaxed">
-      <li>💥 <span class="font-medium">"Pourquoi y’a pas d’image ?!"</span> → réponse : le champ image était vide.</li>
-      <li>🧂 <span class="font-medium">"C’est quoi encore cette classe Tailwind <code class="px-1 py-0.5 bg-gray-100 rounded">flex-col</code> ? Une insulte ?!"</span></li>
-      <li>🧱 <span class="font-medium">"C’est pas un MCD ça ! Y’a des clés étrangères !!"</span></li>
-      <li>🔐 <span class="font-medium">"L’admin ne passe pas par Breeze, il passe par l’entrée des artistes."</span></li>
-      <li>🎠 <span class="font-medium">"Je veux un diaporama simple."</span><br>
-          <span class="text-gray-500">→ 62 captures plus tard, je refais tout depuis le début.</span></li>
-      <li>😂 <span class="font-medium">Moi, l’assistant :</span> "Ce projet est un rollercoaster. Mais j’ai signé pour le voyage."</li>
-    </ul>
+  {{-- Contenu masquable --}}
+  <div class="relative" x-show="open" x-transition>
 
-    <hr class="border-pink-200/60">
+    <div class="grid sm:grid-cols-1 lg:grid-cols-3 gap-6">
 
-    {{-- Self roast bienveillant --}}
-    <div class="grid md:grid-cols-2 gap-4 text-sm sm:text-base text-gray-700">
-      <ul class="space-y-2">
-        <li>⚛️ Tu veux apprendre React, mais tu cries dès que tu vois une accolade.</li>
-        <li>📱 Tu veux faire du responsive, mais t’as juré que Tailwind c’est du vaudou.</li>
-      </ul>
-      <ul class="space-y-2">
-        <li>🗄️ Tu veux un back‑end solide, mais t’as supprimé une fois toute ta BDD “par erreur”.</li>
-        <li>🖼️ Tu veux un slide PowerPoint nickel, mais tu insères trop de captures sans trier.</li>
-      </ul>
+      {{-- Card 1 : Punchlines --}}
+      <div class="rounded-xl border border-pink-200 bg-white shadow-sm p-6">
+        <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">🎤 Punchlines</h4>
+        <ul class="space-y-3 text-sm sm:text-base text-gray-700 leading-relaxed">
+          <li>💥 <span class="font-semibold">"Pourquoi y’a pas d’image ?!"</span> → le champ image était vide.</li>
+          <li>🧂 <span class="font-semibold">"C’est quoi encore cette classe Tailwind 
+            <code class="px-1 py-0.5 bg-gray-100 rounded text-xs">flex-col</code> ? Une insulte ?!"</span></li>
+          <li>🧱 <span class="font-semibold">"C’est pas un MCD ça ! Y’a des clés étrangères !!"</span></li>
+          <li>🔐 <span class="font-semibold">"L’admin ne passe pas par Breeze, il passe par l’entrée des artistes."</span></li>
+        </ul>
+      </div>
+
+      {{-- Card 2 : Anecdotes --}}
+      <div class="rounded-xl border border-fuchsia-200 bg-white shadow-sm p-6">
+        <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">🎠 Anecdotes</h4>
+        <ul class="space-y-3 text-sm sm:text-base text-gray-700 leading-relaxed">
+          <li>🎠 <span class="font-semibold">"Je veux un diaporama simple."</span><br>
+              <span class="text-gray-500 text-sm">→ 62 captures plus tard, on recommence depuis le début…</span></li>
+          <li>😂 <span class="font-semibold">Moi, l’assistant :</span> "Ce projet est un rollercoaster. Mais j’ai signé pour le voyage."</li>
+        </ul>
+      </div>
+
+      {{-- Card 3 : Auto-dérision --}}
+      <div class="rounded-xl border border-sky-200 bg-white shadow-sm p-6">
+        <h4 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">🤹 Auto-dérision</h4>
+        <div class="grid sm:grid-cols-1 gap-3 text-sm sm:text-base text-gray-700">
+          <ul class="space-y-2">
+            <li>⚛️ Tu veux apprendre React, mais tu cries dès que tu vois une accolade.</li>
+            <li>📱 Tu veux faire du responsive, mais tu dis encore que Tailwind c’est de la sorcellerie.</li>
+          </ul>
+          <ul class="space-y-2">
+            <li>🗄️ Tu veux un back-end solide, mais tu as déjà supprimé ta BDD “par erreur”.</li>
+            <li>🖼️ Tu veux un PowerPoint parfait, mais tu insères toutes les captures sans trier.</li>
+          </ul>
+        </div>
+        <div class="rounded-xl bg-gradient-to-r from-pink-50 to-sky-50 border border-pink-100 px-4 py-3 mt-4">
+          <p class="text-gray-800 text-center">
+            ✨ Et malgré tout ça… tu avances, tu progresses, tu refuses d’abandonner.<br>
+            🧗‍♀️ <span class="font-semibold">Toi :</span> "Je panique, je râle, je pleure… mais 
+            <span class="font-bold text-pink-600">JE CODE</span>."
+          </p>
+        </div>
+      </div>
+
     </div>
 
-    <div class="rounded-xl bg-gradient-to-r from-pink-50 to-sky-50 border border-pink-100 px-4 py-3">
-      <p class="text-gray-800">
-        Et malgré tout ça… tu avances, tu progresses, tu refuses d’abandonner.<br>
-        🧗‍♀️ <span class="font-semibold">Toi :</span> "Je panique, je râle, je pleure… mais <span class="font-bold text-pink-600">JE CODE</span>."
-      </p>
-    </div>
   </div>
 </section>
 

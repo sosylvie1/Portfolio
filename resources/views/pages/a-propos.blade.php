@@ -32,25 +32,36 @@
 
             </div>
 
+            
             <div class="my-12 grid grid-cols-1 md:grid-cols-2 gap-6">
-                {{-- Card 1 --}}
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden text-center p-4">
-                    <img src="{{ asset('images/formation-cannes.jpg') }}" alt="Début de la formation développeuse web"
-                        class="mx-auto rounded-lg shadow max-w-full">
-                    <p class="text-sm text-gray-600 mt-3">Groupe de la formation web 👩‍💻</p>
-                </div>
 
-                {{-- Card 2 --}}
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden text-center p-4">
+                {{-- Card 1 sécurisée --}}
+                <figure class="bg-white rounded-lg shadow-lg overflow-hidden text-center p-4 relative photo-container"
+                    role="group" aria-labelledby="caption-formation-cannes">
+                    <img src="{{ asset('images/formation-cannes.jpg') }}"
+                        alt="Groupe des participants à la formation développeuse web"
+                        class="protected-image mx-auto rounded-lg shadow max-w-full" loading="lazy">
+                    <div class="watermark">© Sylvie Seguinaud</div>
+                    <figcaption id="caption-formation-cannes" class="text-sm text-gray-600 mt-3">
+                        Groupe de la formation web 👩‍💻
+                    </figcaption>
+                </figure>
+
+                {{-- Card 2 sécurisée --}}
+                <figure class="bg-white rounded-lg shadow-lg overflow-hidden text-center p-4 relative photo-container"
+                    role="group" aria-labelledby="caption-formation">
                     <img src="{{ asset('images/formation.jpg') }}"
-                        alt="le plus jeune et la plus agée du groupe de la formation"
-                        class="mx-auto rounded-lg shadow max-w-xs sm:max-w-sm">
+                        alt="Le plus jeune et la plus âgée du groupe de la formation web"
+                        class="protected-image mx-auto rounded-lg shadow max-w-xs sm:max-w-sm" loading="lazy">
+                    <div class="watermark">© Sylvie Seguinaud</div>
+                    <figcaption id="caption-formation" class="text-sm text-gray-600 mt-3">
+                        Le plus jeune (Hugo) et la plus âgée (moi) du groupe de la formation 😉
+                    </figcaption>
+                </figure>
 
-
-                    <p class="text-sm text-gray-600 mt-3">Le plus jeune (Hugo) et la plus agée (moi) du groupe de la
-                        formation 😉</p>
-                </div>
             </div>
+
+
 
 
             {{-- Citation inspirante --}}
@@ -98,3 +109,18 @@
         </div>
     </section>
 @endsection
+@push('styles')
+    <style>
+        .photo-container {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .protected-image {
+            pointer-events: none;
+            /* bloque drag & drop */
+            user-select: none;
+            /* empêche sélection */
+        }
+    </style>
+@endpush

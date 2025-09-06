@@ -1,48 +1,43 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto px-4 py-8" x-data="{ open: false, image: '' }">
+<div class="container mx-auto px-4 py-8">
     <h1 class="text-3xl font-bold mb-6 text-center">
-        🌍 {{ $voyage->pays }} ({{ $voyage->annee }})
+        {{ $voyage->pays }} ({{ $voyage->annee }})
     </h1>
 
-    <p class="text-center text-gray-600 mb-8">{{ $voyage->description }}</p>
-
-    <!-- Galerie photos (si tu en as plusieurs plus tard) -->
-    <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+    <!-- Image principale -->
+    <div class="mb-6">
         <img src="{{ asset($voyage->photo) }}" 
-             alt="{{ $voyage->pays }}"
-             class="w-full h-64 object-cover rounded-lg shadow cursor-pointer"
-             @click="open = true; image = '{{ asset($voyage->photo) }}'">
+             alt="{{ $voyage->pays }}" 
+             class="w-full max-h-96 object-cover rounded-lg shadow">
+    </div>
 
-        {{-- Exemple si tu ajoutes d’autres photos un jour --}}
-        <h1 class="text-3xl font-bold mb-6 text-center">
-    🌍 {{ $voyage->pays }} ({{ $voyage->annee }})
-</h1>
+    <!-- Description -->
+    <p class="text-gray-600 mb-6 text-center">{{ $voyage->description }}</p>
 
-<p class="text-gray-600 mb-6 text-center">{{ $voyage->description }}</p>
+    <!-- Galerie supplémentaire -->
+    @php
+        $photos = $voyage->photos ? json_decode($voyage->photos, true) : [];
+    @endphp
 
-<div class="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
-    @if($voyage->photos)
-        @foreach($voyage->photos as $photo)
-            <img src="{{ asset($photo) }}" 
-                 alt="{{ $voyage->pays }}" 
-                 class="w-full h-64 object-cover rounded-lg shadow cursor-pointer">
-        @endforeach
-    @endif
-</div>
-
-    <!-- Lightbox -->
-    <div x-show="open"
-         class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50"
-         x-transition>
-        <div class="relative">
-            <button @click="open = false"
-                    class="absolute top-2 right-2 bg-white rounded-full p-2 shadow hover:bg-gray-200">
-                ✖
-            </button>
-            <img :src="image" class="max-h-[90vh] max-w-[90vw] rounded-lg shadow-lg">
+    @if(!empty($photos))
+        <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+            @foreach($photos as $photo)
+                <img src="{{ asset($photo) }}" 
+                     alt="{{ $voyage->pays }}" 
+                     class="w-full h-64 object-cover rounded-lg shadow cursor-pointer">
+            @endforeach
         </div>
+    @endif
+
+    <!-- Retour -->
+    <div class="mt-8 text-center">
+        <a href="{{ route('voyages.index') }}" 
+           class="inline-block px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition">
+            ⬅ Retour aux voyages
+        </a>
     </div>
 </div>
 @endsection
+

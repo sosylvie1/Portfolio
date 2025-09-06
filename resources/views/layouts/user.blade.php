@@ -108,6 +108,6 @@
         </main>
     </div>
 
-    <x-cookie-banner />
+    {{-- <x-cookie-banner /> --}}
 </body>
 </html>
