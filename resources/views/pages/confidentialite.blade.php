@@ -76,3 +76,22 @@
     </div>
 </div>
 @endsection
+@push('head')
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'WebPage',
+    'name' => 'Politique de confidentialité',
+    'description' => 'Politique de confidentialité concernant les données collectées sur le portfolio de Sylvie Seguinaud.',
+    'url' => url('/confidentialite'),
+    'inLanguage' => 'fr',
+    'mainEntity' => [
+        '@type' => 'PrivacyPolicy',
+        'name' => 'Politique de confidentialité - Portfolio de Sylvie Seguinaud',
+        'url' => url('/confidentialite')
+    ]
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
+</script>
+@endpush
+
+

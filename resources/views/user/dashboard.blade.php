@@ -1,6 +1,7 @@
 @extends('layouts.user')
 
 @section('title', 'Dashboard utilisateur')
+@section('robots', 'noindex, nofollow')
 
 @section('content')
     <div class="bg-white shadow rounded-lg p-6 w-full lg:w-2/3">

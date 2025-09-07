@@ -69,3 +69,21 @@
     </div>
 </div>
 @endsection
+@push('head')
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'WebPage',
+    'name' => 'Conditions Générales d’Utilisation',
+    'description' => 'Conditions générales d’utilisation du portfolio de Sylvie Seguinaud.',
+    'url' => url('/cgu'),
+    'inLanguage' => 'fr',
+    'mainEntity' => [
+        '@type' => 'TermsOfService',
+        'name' => 'CGU - Portfolio de Sylvie Seguinaud',
+        'url' => url('/cgu')
+    ]
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
+</script>
+@endpush
+

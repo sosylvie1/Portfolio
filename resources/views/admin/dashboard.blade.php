@@ -1,6 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
+@section('robots', 'noindex, nofollow')
 @php
   $totalProjects  = $totalProjects  ?? 0;
   $totalUsers     = $totalUsers     ?? 0;

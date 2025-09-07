@@ -19,7 +19,6 @@ use App\Http\Controllers\Admin\ProjectController as AdminProjectController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ContactAdminController;
 
-
 /*
 |--------------------------------------------------------------------------
 | Routes PUBLIQUES
@@ -29,39 +28,26 @@ Route::get('/accueil', [HomeController::class, 'accueil'])->name('accueil');
 Route::get('/a-propos', [HomeController::class, 'aPropos'])->name('a-propos');
 Route::get('/voyages', [VoyageController::class, 'index'])->name('voyages.index');
 
-
 // 🔓 Public Footer
 Route::redirect('/', '/accueil');
-Route::get('/confidentialite', function () {
-    return view('pages.confidentialite');
-})->name('confidentialite');
-
-Route::get('/plan-du-site', function () {
-    return view('pages.plan-du-site');
-})->name('plan-du-site');
-
-Route::get('/cgu', function () {
-    return view('pages.cgu');
-})->name('cgu');
+Route::get('/confidentialite', fn () => view('pages.confidentialite'))->name('confidentialite');
+Route::get('/plan-du-site', fn () => view('pages.plan-du-site'))->name('plan-du-site');
+Route::get('/cgu', fn () => view('pages.cgu'))->name('cgu');
 
 // Projets côté public
 Route::get('/projets', [ProjectController::class, 'index'])->name('projets.index');
-
 
 // Formulaire de contact public
 Route::get('/contact', [ContactController::class, 'showForm'])->name('contact.show');
 Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
 
 // --- CV PUBLIC ---
-Route::get('/cv-public', [CvController::class, 'show'])->name('cv.public');   // page publique
+Route::get('/cv-public', [CvController::class, 'show'])->name('cv.public');     // page publique
 Route::get('/cv/preview', [CvController::class, 'preview'])->name('cv.preview'); // aperçu PDF public
 
 // Bandeau RGPD (affichage et soumission)
 Route::post('/cookie-consent', [ConsentController::class, 'store'])->name('cookie-consent.store');
-
-Route::get('/cookies', function () {
-    return view('pages.cookies'); // page à créer
-})->name('cookies.manage');
+Route::get('/cookies', fn () => view('pages.cookies'))->name('cookies.manage');
 
 /*
 |--------------------------------------------------------------------------
@@ -106,35 +92,38 @@ Route::middleware(['auth'])->group(function () {
 |--------------------------------------------------------------------------
 |
 | ⚠️ Ces routes nécessitent un middleware `is_admin`
-| (à implémenter : il vérifie si user->role == 'admin').
+| (il vérifie si user->role == 'admin').
 |
 */
-Route::middleware(['auth', 'is_admin'])->prefix('admin')->name('admin.')->group(function () {
-    // Dashboard admin
-    Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
+Route::middleware(['auth', 'is_admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
 
-    // Gestion messages reçus
-    Route::get('/contacts', [ContactAdminController::class, 'index'])->name('contacts.index');
-    Route::get('/contacts/{message}', [ContactAdminController::class, 'show'])->name('contacts.show');
-    Route::post('/contacts/{message}/reply', [ContactAdminController::class, 'reply'])->name('contacts.reply');
-    Route::delete('/contacts/{message}', [ContactAdminController::class, 'destroy'])->name('contacts.destroy');
+        Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
-    // Gestion utilisateurs
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
-    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+        // Gestion messages reçus
+        Route::get('/contacts', [ContactAdminController::class, 'index'])->name('contacts.index');
+        Route::get('/contacts/{message}', [ContactAdminController::class, 'show'])->name('contacts.show');
+        Route::post('/contacts/{message}/reply', [ContactAdminController::class, 'reply'])->name('contacts.reply');
+        Route::delete('/contacts/{message}', [ContactAdminController::class, 'destroy'])->name('contacts.destroy');
 
-    // Gestion projets (CRUD)
-    Route::get('/projets', [AdminProjectController::class, 'index'])->name('projets.index');
-    Route::get('/projets/create', [AdminProjectController::class, 'create'])->name('projets.create');
-    Route::post('/projets', [AdminProjectController::class, 'store'])->name('projets.store');
-    Route::get('/projets/{id}', [AdminProjectController::class, 'show'])->name('projets.show');
-    Route::get('/projets/{id}/edit', [AdminProjectController::class, 'edit'])->name('projets.edit');
-    Route::put('/projets/{id}', [AdminProjectController::class, 'update'])->name('projets.update');
-    Route::delete('/projets/{id}', [AdminProjectController::class, 'destroy'])->name('projets.destroy');
+        // Gestion utilisateurs
+        Route::get('/users', [UserController::class, 'index'])->name('users.index');
+        Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
+        Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
 
-    // Statistiques admin
-    Route::get('/stats', [AdminController::class, 'stats'])->name('stats');
-});
+        // Gestion projets (CRUD admin)
+        Route::get('/projets', [AdminProjectController::class, 'index'])->name('projets.index');
+        Route::get('/projets/create', [AdminProjectController::class, 'create'])->name('projets.create');
+        Route::post('/projets', [AdminProjectController::class, 'store'])->name('projets.store');
+        Route::get('/projets/{id}', [AdminProjectController::class, 'show'])->name('projets.show');
+        Route::get('/projets/{id}/edit', [AdminProjectController::class, 'edit'])->name('projets.edit');
+        Route::put('/projets/{id}', [AdminProjectController::class, 'update'])->name('projets.update');
+        Route::delete('/projets/{id}', [AdminProjectController::class, 'destroy'])->name('projets.destroy');
+
+        // Statistiques admin
+        Route::get('/stats', [AdminController::class, 'stats'])->name('stats');
+    });
 
 require __DIR__.'/auth.php';

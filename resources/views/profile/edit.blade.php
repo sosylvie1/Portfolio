@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Modifier mon profil')
+@section('robots', 'noindex, nofollow')
 
 @section('content')
 

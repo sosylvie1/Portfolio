@@ -1,19 +1,24 @@
 @extends('layouts.app')
 
 @section('content')
-    <section class="bg-pink-50 py-16 px-4">
+    <!-- Section d’introduction avec fond pastel -->
+    <section class="bg-pink-50 py-16 px-4" aria-labelledby="section-intro">
         <div class="max-w-6xl mx-auto flex flex-col-reverse md:flex-row items-center gap-10">
 
             {{-- Texte d'accueil --}}
             <div class="md:w-1/2 text-center md:text-left space-y-6">
-                <h1 class="text-4xl md:text-5xl font-bold leading-tight text-gray-800">
+
+                <!-- ✅ H1 unique pour SEO -->
+                <h1 id="section-intro" class="text-4xl md:text-5xl font-bold leading-tight text-gray-800">
                     Reconvertie, rechargée, redéployée.
                 </h1>
 
+                <!-- ✅ Phrase d’accroche mise en <p> pour SEO + accessibilité -->
                 <p class="text-pink-600 font-medium text-lg italic mt-2">
                     À 63 ans, j’ai relevé le défi du numérique. Et je suis prête à relever les vôtres.
                 </p>
 
+                <!-- ✅ Paragraphes bien structurés pour SEO -->
                 <div class="space-y-4 text-gray-700 text-base leading-relaxed">
                     <p>
                         Une reconversion engagée, née d'un parcours personnel riche. Après avoir vécu en France, aux
@@ -32,7 +37,10 @@
                         riche en expériences internationales.
                         De Dubaï aux États-Unis, du Mexique à la Colombie, en passant par les îles Caïmans, j’ai voyagé,
                         vécu et travaillé à travers le monde.
-                        Au fil des années, j’ai accumulé plus de 30 000 photos (merci Google photos) — un véritable trésor
+                    </p>
+
+                    <p>
+                        Au fil des années, j’ai accumulé plus de 30 000 photos (merci Google Photos) — un véritable trésor
                         de souvenirs — et il a été difficile d’en choisir quelques-unes seulement pour être représentatives
                         de ce voyage de vie.
                         Vous y découvrirez mes projets, mes compétences, mais aussi les traces de ce cheminement
@@ -40,24 +48,24 @@
                     </p>
                 </div>
 
-                {{-- Lien illustré vers la page voyages --}}
+                {{-- ✅ Lien vers les voyages avec texte alternatif pertinent --}}
                 <div class="flex justify-center mt-6">
-                    <a href="{{ route('voyages.index') }}">
-                        <img src="{{ asset('images/googlemap.png') }}" alt="Découvrir mes voyages"
-                            class="w-40 sm:w-52 rounded-lg shadow-lg hover:opacity-90 transition">
+                    <a href="{{ route('voyages.index') }}" aria-label="Découvrir mes voyages en images">
+                        <img src="{{ asset('images/googlemap.png') }}" alt="Lien illustré vers la page Voyages"
+                            class="w-40 sm:w-52 rounded-lg shadow-lg hover:opacity-90 transition" loading="lazy">
                     </a>
                 </div>
             </div>
 
-
-            {{-- Image portrait sécurisée class protected-image --}}
-            <figure class ="md:w-1/2 flex justify-center">
+            {{-- Image portrait sécurisée --}}
+            <figure class="md:w-1/2 flex justify-center" role="group" aria-labelledby="caption-sylvie">
                 <div class="photo-container w-full max-w-md">
-                    <img src="{{ asset('images/sylvie1.jpg') }}" alt="Portrait Sylvie Seguinaud"
-                        class="protected-image w-full max-h-[500px] rounded-xl shadow-xl object-contain sm:object-cover mx-auto "
+                    <img src="{{ asset('images/sylvie1.jpg') }}" alt="Portrait de Sylvie Seguinaud"
+                        class="protected-image w-full max-h-[500px] rounded-xl shadow-xl object-contain sm:object-cover mx-auto"
                         loading="lazy">
                     <div class="watermark">© Sylvie Seguinaud</div>
                 </div>
+                <!-- ✅ Figcaption utile pour accessibilité -->
                 <figcaption id="caption-sylvie" class="sr-only">
                     Portrait officiel de Sylvie Seguinaud
                 </figcaption>
@@ -66,6 +74,36 @@
         </div>
     </section>
 @endsection
+{{-- pour relier la page d’accueil à moi --}}
+@push('head')
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'WebPage',
+    'name' => 'Accueil - Portfolio de Sylvie Seguinaud',
+    'description' => "Bienvenue sur le portfolio de Sylvie Seguinaud, développeuse web. Découvrez mes projets, mes compétences et mon parcours international.",
+    'url' => url('/'),
+    'inLanguage' => 'fr',
+    'isPartOf' => [
+        '@type' => 'WebSite',
+        'name' => 'Portfolio de Sylvie Seguinaud',
+        'url' => url('/')
+    ],
+    'about' => [
+        '@type' => 'Person',
+        'name' => 'Sylvie Seguinaud',
+        'jobTitle' => 'Développeuse Web & Web Mobile',
+        'url' => url('/a-propos'),
+        'sameAs' => [
+            'https://www.linkedin.com/in/sylvie-seguinaud',
+            'https://github.com/sosylvie1'
+        ]
+    ]
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
+</script>
+@endpush
+
+
 
 @push('styles')
     <style>
@@ -80,32 +118,19 @@
             user-select: none;
             /* empêche sélection */
         }
+
+        /* ✅ Filigrane centré et en diagonale */
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-30deg);
+            color: rgba(255, 255, 255, 0.25);
+            font-size: clamp(1rem, 3vw, 2rem);
+            font-weight: bold;
+            white-space: nowrap;
+            pointer-events: none;
+            user-select: none;
+        }
     </style>
 @endpush
-
-{{-- /* ✅ Filigrane centré et en diagonale
-    .watermark {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%) rotate(-30deg);
-        color: rgba(255, 255, 255, 0.25);
-        font-size: clamp(1rem, 3vw, 2rem);
-        font-weight: bold;
-        white-space: nowrap;
-        pointer-events: none;
-        user-select: none;
-    } */ --}}
-
-
-{{-- @push('scripts')
-<script>
-    // ✅ Bloque le clic droit uniquement sur les images protégées
-    document.addEventListener("contextmenu", function(e) {
-        if (e.target.classList.contains('protected-image')) {
-            e.preventDefault();
-            alert("🚫 Copie interdite !");
-        }
-    });
-</script>
-@endpush --}}

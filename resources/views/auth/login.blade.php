@@ -1,3 +1,9 @@
+@extends('layouts.app')
+
+@section('title', 'Connexion')
+@section('robots', 'noindex, nofollow')
+
+
 <x-guest-layout>
     {{-- Logo --}}
     <div class="flex justify-center mb-6">

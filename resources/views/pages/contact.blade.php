@@ -4,22 +4,7 @@
 <div class="max-w-3xl mx-auto py-12 px-6">
     <h1 class="text-3xl font-bold text-center mb-8">📩 Contact</h1>
 
-    {{-- @if (session('success'))
-    <div class="flex items-center gap-2 bg-green-100 border border-green-300 text-green-800 px-4 py-3 rounded mb-6 shadow text-center">
-        <svg class="w-5 h-5 flex-shrink-0 text-green-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-        </svg>
-        <span class="text-sm sm:text-base font-medium">
-            {{ session('success') }}
-        </span>
-         </div>
-        <div class="flex items-center gap-2 bg-green-100 border border-green-300 text-green-800 px-4 py-3 rounded mb-6 shadow text-center">
-        <a href="{{ route('accueil') }}"
-           class="inline-block mt-2 px-4 py-2 bg-pink-500 text-white rounded-lg shadow hover:bg-pink-600 transition">
-            ⬅ Retour à l'accueil
-        </a>
-    </div>
-@endif --}}
+    
 
 
     <form action="{{ route('contact.send') }}" method="POST"
@@ -69,3 +54,33 @@
     </form>
 </div>
 @endsection
+@push('head')
+<script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'ContactPage',
+    'name' => 'Contact - Portfolio de Sylvie Seguinaud',
+    'description' => "Page de contact pour joindre Sylvie Seguinaud, développeuse web. Envoyez un message ou retrouvez mes coordonnées.",
+    'url' => url('/contact'),
+    'inLanguage' => 'fr',
+    'isPartOf' => [
+        '@type' => 'WebSite',
+        'name' => 'Portfolio de Sylvie Seguinaud',
+        'url' => url('/')
+    ],
+    'mainEntityOfPage' => url('/contact'),
+    'about' => [
+        '@type' => 'Person',
+        'name' => 'Sylvie Seguinaud',
+        'jobTitle' => 'Développeuse Web & Web Mobile',
+        'sameAs' => [
+            'https://www.linkedin.com/in/sylvie-seguinaud',
+            'https://github.com/sosylvie1'
+        ]
+    ]
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
+</script>
+@endpush
+
+@endpush
+

@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Mon profil')
+@section('robots', 'noindex, nofollow')
 
 @section('content')
 <div class="py-8">

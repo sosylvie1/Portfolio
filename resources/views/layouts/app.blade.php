@@ -5,48 +5,133 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <!-- ✅ Balise robots SEO -->
+<meta name="robots" content="@yield('robots', 'index, follow')">
 
-    {{-- ✅ SEO : description --}}
+
+    {{-- ✅ SEO de base --}}
     <meta name="description"
         content="Portfolio de Sylvie Seguinaud, développeuse web. Découvrez mes projets, mon parcours et mes compétences.">
+    <meta name="author" content="Sylvie Seguinaud">
+    <meta name="robots" content="index, follow">
 
-    {{-- ✅ SEO : Open Graph --}}
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    {{-- ✅ Open Graph --}}
     <meta property="og:title" content="@yield('title', 'Sylvie Seguinaud')" />
     <meta property="og:description"
         content="Portfolio de Sylvie Seguinaud, développeuse web. Découvrez mes projets, mon parcours et mes compétences." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="{{ url()->current() }}" />
     <meta property="og:image" content="{{ asset('images/preview.jpg') }}" />
+    <meta property="og:site_name" content="Portfolio Sylvie Seguinaud" />
 
-    {{-- ✅ SEO : Twitter Card --}}
+    {{-- ✅ Twitter Card --}}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="@yield('title', 'Sylvie Seguinaud')" />
     <meta name="twitter:description"
         content="Portfolio de Sylvie Seguinaud, développeuse web. Découvrez mes projets, mon parcours et mes compétences." />
     <meta name="twitter:image" content="{{ asset('images/preview.jpg') }}" />
 
-    {{-- ✅ Titre dynamique --}}
+
+    {{-- ✅ JSON-LD : Person --}}
+    <script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'Person',
+    'name' => 'Sylvie Seguinaud',
+    'jobTitle' => 'Développeuse Web & Web Mobile',
+    'description' => "Développeuse web passionnée, spécialisée en Laravel, Blade et Tailwind CSS, intuitive, créative et persévérante.",
+    'url' => url('/a-propos'),
+    'sameAs' => [
+        'https://www.linkedin.com/in/sylvie-seguinaud',
+        'https://github.com/sosylvie1'
+    ]
+], JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT) !!}
+</script>
+
+    {{-- ✅ JSON-LD : WebSite --}}
+    <script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'WebSite',
+    'url' => url('/'),
+    'name' => 'Portfolio de Sylvie Seguinaud',
+    'potentialAction' => [
+        '@type' => 'SearchAction',
+        'target' => url('/recherche?q={search_term_string}'),
+        'query-input' => 'required name=search_term_string'
+    ]
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
+</script>
+
+    {{-- ✅ JSON-LD : Fil d’Ariane --}}
+    <script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'BreadcrumbList',
+    'itemListElement' => [
+        [
+            '@type' => 'ListItem',
+            'position' => 1,
+            'name' => 'Accueil',
+            'item' => url('/')
+        ],
+        [
+            '@type' => 'ListItem',
+            'position' => 2,
+            'name' => View::yieldContent('title', 'Page'),
+            'item' => url()->current()
+        ],
+    ]
+], JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT) !!}
+</script>
+
+    {{-- ✅ JSON-LD : Pages légales regroupées --}}
+    <script type="application/ld+json">
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'WebPage',
+    'name' => 'Pages légales - Portfolio de Sylvie Seguinaud',
+    'description' => 'Regroupement des pages légales du portfolio : CGU, Politique de confidentialité et Plan du site.',
+    'url' => url('/'),
+    'inLanguage' => 'fr',
+    'hasPart' => [
+        [
+            '@type' => 'TermsOfService',
+            'name' => 'Conditions Générales d’Utilisation',
+            'url' => url('/cgu')
+        ],
+        [
+            '@type' => 'PrivacyPolicy',
+            'name' => 'Politique de confidentialité',
+            'url' => url('/confidentialite')
+        ],
+        [
+            '@type' => 'WebPage',
+            'name' => 'Plan du site',
+            'url' => url('/plan-du-site')
+        ]
+    ]
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
+</script>
+
+
     <title>@yield('title', 'Sylvie Seguinaud')</title>
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
-    <!-- Styles & app scripts (Vite) -->
+    {{-- ✅ Styles et scripts via Vite --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-    {{-- ✅ Styles poussés depuis les vues --}}
     @stack('styles')
+    @stack('head')  {{-- ✅ Ici seront injectés les JSON-LD spécifiques aux pages --}}
 </head>
 
 <body class="font-sans antialiased bg-gray-100 text-gray-900">
     <div class="min-h-screen flex flex-col">
 
-        {{-- Navigation --}}
+        {{-- ✅ Navigation principale --}}
         @include('layouts.navigation')
 
-        {{-- Titre éventuel --}}
+        {{-- ✅ Titre éventuel --}}
         @isset($header)
             <header class="bg-white shadow" role="banner">
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
@@ -55,9 +140,9 @@
             </header>
         @endisset
 
-        {{-- Contenu principal --}}
+        {{-- ✅ Contenu principal --}}
         <main id="main-content" class="flex-1 py-6 sm:py-10 px-2 sm:px-4" role="main">
-            <div class="max-w-4xl mx-auto">
+            <div class="max-w-4xl mx-auto" aria-live="assertive">
                 {{-- 🔥 Messages flash --}}
                 @if (session('cookie_success'))
                     <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4"
@@ -94,7 +179,7 @@
             @yield('content')
         </main>
 
-        {{-- Footer global --}}
+        {{-- ✅ Footer global --}}
         <footer class="bg-gray-100 border-t mt-12" role="contentinfo">
             <div
                 class="max-w-7xl mx-auto px-4 py-6 flex flex-col md:flex-row justify-between items-center text-sm text-gray-600">
@@ -111,6 +196,8 @@
             </div>
         </footer>
     </div>
+{{-- ✅ Scripts poussés depuis les vues --}}
+    @stack('scripts')
 
     {{-- Alpine via CDN si non chargé dans app.js --}}
     <script src="https://unpkg.com/alpinejs" defer></script>
@@ -144,8 +231,7 @@
         </script>
     @endif
 
-    {{-- ✅ Scripts poussés depuis les vues --}}
-    @stack('scripts')
+    
 
     {{-- ✅ Script global : protection images --}}
     <script>

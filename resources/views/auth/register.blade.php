@@ -1,3 +1,9 @@
+@extends('layouts.app')
+
+@section('title', 'inscription')
+@section('robots', 'noindex, nofollow')
+
+
 <x-guest-layout>
     {{-- Logo perso (optionnel) --}}
     <div class="flex justify-center mb-6">

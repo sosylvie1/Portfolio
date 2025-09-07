@@ -57,13 +57,26 @@
            class="{{ $baseLink }} {{ $isActive('admin.contacts.*') }}"
            @click="open=false">✉️ Messages</a>
 
-        {{-- Retour à l’accueil public --}}
+        
         <div class="pt-2 mt-2 border-t">
           <a href="{{ route('accueil') }}"
              class="{{ $baseLink }} {{ $isActive('accueil') }}"
              @click="open=false">🏠 Accueil public</a>
         </div>
+        {{-- Déconnexion --}}
+        <div class="pt-2 mt-2 border-t">
+          <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit" 
+              class="w-full text-left {{ $baseLink }} text-red-600 hover:bg-red-50"
+              @click="open=false">
+              🚪 Déconnexion
+            </button>
+          </form>
+        </div>
       </nav>
+        
+      
     </aside>
 
     {{-- CONTENU --}}
@@ -80,7 +93,7 @@
       @yield('content')
     </main>
   </div>
-  <x-cookie-banner />
+  {{-- <x-cookie-banner /> --}}
 
   
   {{-- <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script> --}}
