@@ -42,7 +42,7 @@
                 <!-- Card 1 -->
                 <figure class="bg-white rounded-lg shadow-lg overflow-hidden text-center p-4 relative photo-container"
                     role="group" aria-labelledby="caption-formation-cannes">
-                    <img src="{{ asset('images/formation-cannes.jpg') }}"
+                    <img src="{{ asset('images/formation-cannes.webp') }}"
                         alt="Photo du groupe de la formation développeuse web à Cannes"
                         class="protected-image mx-auto rounded-lg shadow max-w-full" loading="lazy">
                     <div class="watermark">© Sylvie Seguinaud</div>
@@ -54,7 +54,7 @@
                 <!-- Card 2 -->
                 <figure class="bg-white rounded-lg shadow-lg overflow-hidden text-center p-4 relative photo-container"
                     role="group" aria-labelledby="caption-formation">
-                    <img src="{{ asset('images/formation.jpg') }}"
+                    <img src="{{ asset('images/formation.webp') }}"
                         alt="Photo avec Hugo et Sylvie, le plus jeune et la plus âgée du groupe"
                         class="protected-image mx-auto rounded-lg shadow max-w-xs sm:max-w-sm" loading="lazy">
                     <div class="watermark">© Sylvie Seguinaud</div>

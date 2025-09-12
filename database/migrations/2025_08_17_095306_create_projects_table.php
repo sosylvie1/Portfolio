@@ -14,6 +14,7 @@ return new class extends Migration
     Schema::create('projects', function (Blueprint $table) {
         $table->id();
         $table->string('title');
+        $table->string('slug')->unique(); // URL propre
         $table->text('description')->nullable();
         $table->string('image')->nullable();
         $table->json('tech')->nullable();
@@ -24,8 +25,10 @@ return new class extends Migration
         $table->string('video')->nullable();
         $table->string('video_webm')->nullable();
         $table->string('figma')->nullable();
-        $table->json('figma_images')->nullable();
+        $table->json('figma_images')->default(json_encode([]));
         $table->date('date')->nullable();
+        $table->boolean('is_published')->default(true); // afficher/masquer
+        $table->integer('order')->default(0);           // tri manuel
         $table->timestamps();
     });
 }

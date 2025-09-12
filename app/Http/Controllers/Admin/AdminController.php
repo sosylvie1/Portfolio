@@ -11,7 +11,9 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
-        $projects = ProjectController::allProjects();
+        // $projects = ProjectController::allProjects();
+        $projects = \App\Models\Project::all();
+
 
         $totalUsers    = User::count();
         $totalMessages = ContactMessage::count();

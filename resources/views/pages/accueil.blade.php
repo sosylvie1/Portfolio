@@ -51,7 +51,7 @@
                 {{-- ✅ Lien vers les voyages avec texte alternatif pertinent --}}
                 <div class="flex justify-center mt-6">
                     <a href="{{ route('voyages.index') }}" aria-label="Découvrir mes voyages en images">
-                        <img src="{{ asset('images/googlemap.png') }}" alt="Lien illustré vers la page Voyages"
+                        <img src="{{ asset('images/googlemap.webp') }}" alt="Lien illustré vers la page Voyages"
                             class="w-40 sm:w-52 rounded-lg shadow-lg hover:opacity-90 transition" loading="lazy">
                     </a>
                 </div>
@@ -60,7 +60,7 @@
             {{-- Image portrait sécurisée --}}
             <figure class="md:w-1/2 flex justify-center" role="group" aria-labelledby="caption-sylvie">
                 <div class="photo-container w-full max-w-md">
-                    <img src="{{ asset('images/sylvie1.jpg') }}" alt="Portrait de Sylvie Seguinaud"
+                    <img src="{{ asset('images/sylvie1.webp') }}" alt="Portrait de Sylvie Seguinaud"
                         class="protected-image w-full max-h-[500px] rounded-xl shadow-xl object-contain sm:object-cover mx-auto"
                         loading="lazy">
                     <div class="watermark">© Sylvie Seguinaud</div>

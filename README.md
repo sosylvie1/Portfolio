@@ -1,61 +1,117 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+![Laravel](https://img.shields.io/badge/Laravel-12.21.0-orange?logo=laravel&logoColor=white)
+![Blade](https://img.shields.io/badge/Blade-Templates-red?logo=laravel&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4-blue?logo=tailwind-css&logoColor=white)
+![AlpineJS](https://img.shields.io/badge/Alpine.js-3.x-lightblue?logo=javascript&logoColor=black)
+![Vite](https://img.shields.io/badge/Vite-5-purple?logo=vite&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-3-blue?logo=sqlite&logoColor=white)
+![Author](https://img.shields.io/badge/Auteur-Sylvie%20Seguinaud-pink?logo=github&logoColor=white)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# 🌸 Portfolio Laravel – Sylvie Seguinaud
 
-## About Laravel
+Bienvenue sur le dépôt GitHub de mon **portfolio personnel**.  
+Ce site présente les **projets majeurs** réalisés durant ma formation de **Développeuse Web & Web Mobile**.  
+Il ne contient pas tous mes exercices pratiques (PHP, React, JavaScript…), mais uniquement mes **projets principaux**, ceux que je présente lors de mon évaluation finale.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+🌐 Mon portfolio est accessible en ligne : [sylvie-seguinaud.fr](https://sylvie-seguinaud.fr)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🎓 Projets présentés après ma formation
 
-## Learning Laravel
+### 1. **Portfolio Laravel**
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+-   Site vitrine de mes compétences et projets
+-   Technologies : Laravel, Blade, Tailwind CSS, AlpineJS
+-   [Code](https://github.com/sosylvie1/portfolio) | [Site en ligne](https://sylvie-seguinaud.fr)
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 🎓 Projets présenté durant ma formation
 
-## Laravel Sponsors
+### 2. **Blog éducatif – Osez Dire Non**
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+-   Blog participatif avec rôles (admin, éditeur)
+-   Modération des articles et commentaires
+-   Espace publicitaire payant avec intégration Stripe
+-   [Code](https://github.com/sosylvie1/OsezDireNon)
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 3. **Mamie4Family**
 
-## Contributing
+-   Plateforme de mise en relation entre familles et mamies à louer
+-   Gestion des profils, publicités, et réservations (module en cours de développement)
+-   [Code](https://github.com/sosylvie1/Mamy4Family)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## 📱 Aperçu visuel
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Page d’accueil du portfolio
 
-## Security Vulnerabilities
+![Accueil](captures/accueil.png)
+![Projets](captures/projets.png)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Version mobile
 
-## License
+![Mobile](captures/mobile.png)
+![Mobile](captures/mobile-2.png)
+![Mobile](captures/mobile-3.png)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## 🛠️ Stack technique utilisée
+
+-   **Framework principal** : Laravel 12.21.0
+-   **Frontend** : Blade, Tailwind CSS, AlpineJS
+-   **Bundler** : Vite
+-   **Base de données** : SQLite (projets injectés via un Seeder)
+-   **Outils divers** : GitHub, Plesk, Mailtrap
+-   **Accessibilité** : Respect des bonnes pratiques W3C, contrastes, navigation clavier
+
+---
+
+## ♿ Accessibilité & UX
+
+## ♿ Accessibilité & UX
+
+Mon portfolio a été audité avec **Lighthouse** pour garantir une bonne expérience utilisateur :
+
+-   🚀 Performance : **78 / 100**
+-   ♿ Accessibilité : **95 / 100**
+-   🔒 Bonnes pratiques : **81 / 100**
+-   🔍 SEO : **100 / 100**
+
+### 📊 Rapport Lighthouse
+
+![Audit Lighthouse](captures/lighthouse.png)
+
+## 👩‍💻 À propos
+
+Durant ma formation DWWM, j’ai choisi de concentrer mes efforts sur ces 3 projets car ils démontrent mes compétences :
+
+-   💡 Conception **front-end** responsive et soignée
+-   ⚡ Mise en place de **back-end Laravel** robuste
+-   🔐 Gestion de la sécurité et de l’authentification
+-   💳 Intégration de services tiers (Stripe, Mailtrap)
+
+---
+
+## 🚀 Améliorations futures
+
+-   🌙 **Dark mode** pour un meilleur confort utilisateur
+-   📝 Ajout d’une section **blog personnel** dans le portfolio
+-   🔍 Moteur de recherche et filtres avancés sur les projets
+-   📊 Dashboard de statistiques (visites, clics sur projets)
+-   📅 Système complet de **réservation** pour Mamie4Family
+-   📱 Amélioration de l’accessibilité et des performances mobile
+
+---
+
+## 👩‍💻 Auteur
+
+**Sylvie Seguinaud**
+
+-   🌐 [Portfolio en ligne](https://sylvie-seguinaud.fr)
+-   💼 [LinkedIn](https://linkedin.com/in/sylvie-seguinaud)
+-   🐙 [GitHub](https://github.com/sosylvie1)

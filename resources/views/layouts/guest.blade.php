@@ -36,6 +36,8 @@
             {{ $slot }}
         </div>
     </div>
+    {{-- ✅ Bandeau RGPD --}}
+    <x-cookie-banner />
 </body>
 
 </html>

@@ -33,10 +33,13 @@ class DatabaseSeeder extends Seeder
                 'role' => 0,
             ]
         );
+// appel seeder projets
+        $this->call(ProjectSeeder::class);
 
         // 📌 Appel du seeder voyages
         $this->call([
             VoyageSeeder::class,
         ]);
     }
+    
 }

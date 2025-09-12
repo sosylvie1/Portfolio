@@ -114,15 +114,15 @@ Route::middleware(['auth', 'is_admin'])
         Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
 
         // Gestion projets (CRUD admin)
-        Route::get('/projets', [AdminProjectController::class, 'index'])->name('projets.index');
-        Route::get('/projets/create', [AdminProjectController::class, 'create'])->name('projets.create');
-        Route::post('/projets', [AdminProjectController::class, 'store'])->name('projets.store');
-        Route::get('/projets/{id}', [AdminProjectController::class, 'show'])->name('projets.show');
-        Route::get('/projets/{id}/edit', [AdminProjectController::class, 'edit'])->name('projets.edit');
-        Route::put('/projets/{id}', [AdminProjectController::class, 'update'])->name('projets.update');
-        Route::delete('/projets/{id}', [AdminProjectController::class, 'destroy'])->name('projets.destroy');
-
-        // Statistiques admin
+Route::get('/projets', [AdminProjectController::class, 'index'])->name('projets.index');
+Route::get('/projets/create', [AdminProjectController::class, 'create'])->name('projets.create');
+Route::post('/projets', [AdminProjectController::class, 'store'])->name('projets.store');
+Route::get('/projets/{project}', [AdminProjectController::class, 'show'])->name('projets.show');
+Route::get('/projets/{project}/edit', [AdminProjectController::class, 'edit'])->name('projets.edit');
+Route::put('/projets/{project}', [AdminProjectController::class, 'update'])->name('projets.update');
+Route::delete('/projets/{project}', [AdminProjectController::class, 'destroy'])->name('projets.destroy');
+        
+// Statistiques admin
         Route::get('/stats', [AdminController::class, 'stats'])->name('stats');
     });
 
