@@ -5,10 +5,17 @@
 
 
 <x-guest-layout>
-    {{-- Logo --}}
-    <div class="flex justify-center mb-6">
-        <img src="{{ asset('images/logo.png') }}" alt="Sylvie Seguinaud" class="h-20 w-auto">
-    </div>
+    {{-- Logo --}} 
+<div class="flex justify-center mb-6">
+    <img 
+        src="{{ asset('images/logo.webp') }}" 
+        alt="Logo personnel de Sylvie Seguinaud" 
+        class="h-20 w-auto"
+        loading="lazy"
+        decoding="async"
+    >
+</div>
+
 
     <form method="POST" action="{{ route('login') }}" class="space-y-6">
         @csrf

@@ -15,7 +15,7 @@ class ProjectSeeder extends Seeder
             [
                 'title' => 'Portfolio Laravel',
                 'description' => 'Un portfolio technique mais aussi le reflet d’un parcours international.',
-                'image' => 'images/projects/cover-portfolio.png',
+                'image' => 'images/projects/cover-portfolio.webp',
                 'tech' => ['Laravel', 'Blade', 'Tailwind', 'AlpineJS'],
                 'github' => 'https://github.com/sosylvie1/portfolio',
                 'live' => 'https://sylvie-seguinaud.fr',

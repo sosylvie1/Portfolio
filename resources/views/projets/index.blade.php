@@ -6,8 +6,10 @@
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10" role="main" aria-labelledby="projects-title">
 
         <!-- Titre de page -->
+        <!-- Titre de page -->
         <header class="text-center mb-10">
-            <h1 id="projects-title" class="text-3xl sm:text-4xl font-extrabold text-gray-800 mb-4 tracking-tight">
+            <h1 id="projects-title" class="text-3xl sm:text-4xl font-extrabold text-gray-800 mb-4 tracking-tight"
+                style="font-size: 2rem; line-height: 2.5rem;">
                 Mes Projets
             </h1>
             <p class="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
@@ -15,6 +17,7 @@
                 pendant ma formation, pour un aperçu rapide de <span class="font-semibold text-pink-500">mon univers</span>.
             </p>
         </header>
+
 
         <!-- Section moments cultes -->
         <section x-data="{ open: true }"
@@ -125,7 +128,7 @@
                             
                             {{-- <!-- Label sous la bulle -->
           <span class="mt-2 text-[10px] sm:text-xs text-gray-600" x-text="m.label"></span> --}}
-                        {{-- </div>
+        {{-- </div>
                     </template>
                 </div>
 
@@ -137,7 +140,7 @@
                     </button>
                 </div>
             </div>
-        </section> --}} 
+        </section> --}}
 
 
         <!-- Grille projets -->
@@ -196,7 +199,8 @@
             months = 19
         } = {}) {
             const labels = ['Janv.', 'Fév.', 'Mars', 'Avr.', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.',
-                'Déc.'];
+                'Déc.'
+            ];
 
             const first = new Date(startY, startM - 1, 1);
             const arr = [];

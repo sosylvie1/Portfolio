@@ -54,11 +54,13 @@
                     <!-- Portrait -->
                     <figure class="md:w-1/4 mt-3 md:mt-0 flex justify-center" role="group" aria-labelledby="caption-sylvie">
                         <div class="photo-container w-[360px] h-[160px] relative">
-                            <img src="{{ asset('images/sylvie1.jpg') }}" 
+                            <img src="{{ asset('images/sylvie1.webp') }}" 
                                  alt="Portrait professionnel de Sylvie Seguinaud"
                                  class="protected-image rounded-md shadow-md w-full h-full object-cover" 
-                                 loading="lazy">
+                                 width="600" height="600"
+                                 loading="lazy" decoding="async">
                             <div class="watermark">© Sylvie Seguinaud</div>
+                            
                         </div>
                         <figcaption id="caption-sylvie" class="sr-only">
                             Portrait officiel de Sylvie Seguinaud

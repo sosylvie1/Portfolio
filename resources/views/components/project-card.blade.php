@@ -44,11 +44,14 @@
     data-tech="{{ e($techString) }}">
 
     {{-- Image principale --}}
-    <div class="aspect-[16/9] overflow-hidden bg-gray-100">
+    {{-- <div class="aspect-[16/9] overflow-hidden bg-gray-100">
         <img src="{{ $src }}" alt="{{ $title ? 'Aperçu du projet ' . $title : 'Aperçu du projet' }}"
             loading="lazy" decoding="async"
             class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" />
-    </div>
+    </div> --}}
+    {{-- Image principale --}}
+    <img src="{{ $src }}" alt="{{ $title ? 'Aperçu du projet ' . $title : 'Aperçu du projet' }}" loading="lazy"
+        decoding="async" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]">
 
     {{-- Contenu --}}
     <div class="p-5 flex flex-col gap-4 flex-1">
@@ -99,8 +102,7 @@
 
             {{-- Bouton Maquettes + Modale Alpine --}}
             @if (!empty($figmaImages))
-                <div 
-                    x-data="{ openGallery: false, index: 0, images: {{ json_encode(array_map(fn($img) => asset($img), $figmaImages)) }} }">
+                <div x-data="{ openGallery: false, index: 0, images: {{ json_encode(array_map(fn($img) => asset($img), $figmaImages)) }} }">
 
                     <button type="button" @click="openGallery = true"
                         class="inline-flex items-center gap-2 text-xs md:text-sm px-3 py-2 rounded-xl border hover:bg-gray-50">
@@ -110,8 +112,7 @@
                     {{-- Modale Lightbox --}}
                     <div x-show="openGallery" x-transition
                         class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 px-2"
-                        style="display:none"
-                        role="dialog" aria-modal="true" aria-label="Visionneuse de maquettes">
+                        style="display:none" role="dialog" aria-modal="true" aria-label="Visionneuse de maquettes">
 
                         <div class="relative w-full h-full flex items-center justify-center">
 
@@ -133,11 +134,9 @@
 
                             <!-- Image principale -->
                             <figure class="max-h-[90vh] max-w-full flex items-center justify-center relative"
-                                    role="group" aria-labelledby="caption-lightbox">
-                                <img :src="images[index]"
-                                     :alt="'Maquette ' + (index+1)"
-                                     class="max-h-[90vh] max-w-full object-contain rounded-lg shadow-lg"
-                                     loading="lazy">
+                                role="group" aria-labelledby="caption-lightbox">
+                                <img :src="images[index]" :alt="'Maquette ' + (index + 1)"
+                                    class="max-h-[90vh] max-w-full object-contain rounded-lg shadow-lg" loading="lazy">
                                 <figcaption id="caption-lightbox" class="sr-only">
                                     Maquette du projet sélectionné
                                 </figcaption>

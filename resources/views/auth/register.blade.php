@@ -6,9 +6,17 @@
 
 <x-guest-layout>
     {{-- Logo perso (optionnel) --}}
-    <div class="flex justify-center mb-6">
-        <img src="{{ asset('images/logo.png') }}" alt="Sylvie Seguinaud" class="h-32 w-auto">
-    </div>
+    {{-- Logo --}} 
+<div class="flex justify-center mb-6">
+    <img 
+        src="{{ asset('images/logo.webp') }}" 
+        alt="Logo personnel de Sylvie Seguinaud" 
+        class="h-20 w-auto"
+        loading="lazy"
+        decoding="async"
+    >
+</div>
+
     <form method="POST" action="{{ route('register') }}">
         {{-- resources/views/auth/register.blade.php --}}
         @section('title', 'Inscription · ' . config('app.name'))
