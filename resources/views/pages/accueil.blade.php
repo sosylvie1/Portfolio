@@ -10,13 +10,13 @@
 
                 <!-- ✅ H1 unique pour SEO -->
                 <section class="bg-pink-50 py-16 px-4">
-                    <h1 class="text-3xl sm:text-4xl font-bold">
+                    <h1 class="text-3xl sm:text-4xl font-bold mb-6">
                         Reconvertie, rechargée, redéployée.
                     </h1>
 
 
                     <!-- ✅ Phrase d’accroche mise en <p> pour SEO + accessibilité -->
-                    <p class="text-pink-700 font-semibold text-lg italic mt-2">
+                    <p class="text-pink-700 font-semibold text-lg italic mt-2 mb-4">
                         À 63 ans, j’ai relevé le défi du numérique. Et je suis prête à relever les vôtres.
                     </p>
 
@@ -56,14 +56,21 @@
 
                     {{-- ✅ Lien vers les voyages avec texte alternatif pertinent --}}
                     <div class="flex flex-col items-center mt-6 text-center">
-                        <a href="{{ route('voyages.index') }}" aria-label="Découvrir mes voyages en images" class="group">
-                            <img src="{{ asset('images/googlemap.webp') }}" alt="Lien illustré vers la page Voyages"
-                                width="200" height="101"
-                                class="w-40 sm:w-52 rounded-lg shadow-lg transition-transform duration-300 group-hover:scale-105 group-hover:opacity-90"
-                                loading="lazy" decoding="async">
-                            <p class="mt-2 text-sm font-medium text-pink-600 group-hover:text-pink-800">
-                                Embarquement immédiat !
-                            </p>
+                        <section class="bg-pink-50 py-16 px-4">
+                            <a href="{{ route('voyages.index') }}" aria-label="Découvrir mes voyages en images"
+                                class="group">
+                                <img src="{{ asset('images/googlemap.webp') }}" alt="Lien illustré vers la page Voyages"
+                                    width="200" height="101"
+                                    class="w-40 sm:w-52 rounded-lg shadow-lg transition-transform duration-300 group-hover:scale-105 group-hover:opacity-90"
+                                    loading="lazy" decoding="async">
+
+                                <p class="mt-2 text-sm font-medium text-pink-600 group-hover:text-pink-800">
+                                    Embarquement immédiat
+                                </p>
+                        </section>
+
+
+
                         </a>
                     </div>
 
@@ -71,12 +78,20 @@
 
             {{-- Image portrait sécurisée --}}
             <figure class="md:w-1/2 flex justify-center" role="group" aria-labelledby="caption-sylvie">
-                <div class="photo-container w-full max-w-md">
-                    <img src="{{ asset('images/sylvie1.webp') }}" alt="Portrait de Sylvie Seguinaud"
-                        class="protected-image w-full max-h-[500px] rounded-xl shadow-xl object-contain sm:object-cover mx-auto"
-                        width="600" height="600" fetchpriority="high" decoding="async">
-                    <div class="watermark">© Sylvie Seguinaud</div>
+                <div class="photo-container w-full max-w-md relative">
+                    <img src="{{ asset('images/sylvieA.webp') }}" alt="Portrait de Sylvie Seguinaud"
+                        class="protected-image w-full max-h-[500px] rounded-xl shadow-xl object-cover mx-auto"
+                        width="504" height="378" fetchpriority="high" decoding="async" loading="eager"
+                        srcset="{{ asset('images/sylvieA-300.webp') }} 300w,
+                    {{ asset('images/sylvieA.webp') }} 504w"
+                        sizes="(max-width: 640px) 300px, 504px">
+
+                    {{-- ✅ Filigrane --}}
+                    <div class="watermark absolute bottom-2 right-2 text-xs text-gray-700 bg-white/50 px-2 py-1 rounded">
+                        © Sylvie Seguinaud
+                    </div>
                 </div>
+
                 <!-- ✅ Figcaption utile pour accessibilité -->
                 <figcaption id="caption-sylvie" class="sr-only">
                     Portrait officiel de Sylvie Seguinaud

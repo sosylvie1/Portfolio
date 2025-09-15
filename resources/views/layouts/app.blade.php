@@ -2,6 +2,9 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
+    <!-- ✅ Preload image principale (LCP) -->
+    <link rel="preload" as="image" href="{{ asset('images/sylvieA.webp') }}" type="image/webp" fetchpriority="high">
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -11,7 +14,7 @@
 
     {{-- ✅ SEO de base --}}
     <meta name="description"
-          content="Portfolio de Sylvie Seguinaud, développeuse web. Découvrez mes projets, mon parcours et mes compétences.">
+        content="Portfolio de Sylvie Seguinaud, développeuse web. Découvrez mes projets, mon parcours et mes compétences.">
     <meta name="author" content="Sylvie Seguinaud">
 
     <link rel="canonical" href="{{ url()->current() }}">
@@ -19,7 +22,7 @@
     {{-- ✅ Open Graph --}}
     <meta property="og:title" content="@yield('title', 'Sylvie Seguinaud')" />
     <meta property="og:description"
-          content="Portfolio de Sylvie Seguinaud, développeuse web. Découvrez mes projets, mon parcours et mes compétences." />
+        content="Portfolio de Sylvie Seguinaud, développeuse web. Découvrez mes projets, mon parcours et mes compétences." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="{{ url()->current() }}" />
     <meta property="og:image" content="{{ asset('images/preview.jpg') }}" />
@@ -29,7 +32,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="@yield('title', 'Sylvie Seguinaud')" />
     <meta name="twitter:description"
-          content="Portfolio de Sylvie Seguinaud, développeuse web. Découvrez mes projets, mon parcours et mes compétences." />
+        content="Portfolio de Sylvie Seguinaud, développeuse web. Découvrez mes projets, mon parcours et mes compétences." />
     <meta name="twitter:image" content="{{ asset('images/preview.jpg') }}" />
 
     {{-- ✅ JSON-LD : Person --}}
@@ -179,7 +182,8 @@
 
         {{-- ✅ Footer global --}}
         <footer class="bg-gray-100 border-t mt-12" role="contentinfo">
-            <div class="max-w-7xl mx-auto px-4 py-6 flex flex-col md:flex-row justify-between items-center text-sm text-gray-600">
+            <div
+                class="max-w-7xl mx-auto px-4 py-6 flex flex-col md:flex-row justify-between items-center text-sm text-gray-600">
                 <p>&copy; {{ date('Y') }} Sylvie Seguinaud — Portfolio</p>
                 <nav class="flex flex-col sm:flex-row gap-2 sm:gap-4 text-center sm:text-left"
                     aria-label="Liens légaux">
@@ -239,45 +243,46 @@
             }
         });
     </script>
-  <script>
-function gallery(images) {
-    return {
-        images,
-        index: 0,
-        zoom: false,
-        isPanning: false,
-        startX: 0,
-        startY: 0,
-        offsetX: 0,
-        offsetY: 0,
+    <script>
+        function gallery(images) {
+            return {
+                images,
+                index: 0,
+                zoom: false,
+                isPanning: false,
+                startX: 0,
+                startY: 0,
+                offsetX: 0,
+                offsetY: 0,
 
-        // navigation
-        next() {
-            this.index = (this.index + 1) % this.images.length;
-            this.resetZoom();
-        },
-        prev() {
-            this.index = (this.index - 1 + this.images.length) % this.images.length;
-            this.resetZoom();
-        },
-        go(i) {
-            this.index = i;
-            this.resetZoom();
-        },
-        close(dlg) {
-            dlg?.close();
-            this.resetZoom();
-        },
-        resetZoom() {
-            this.zoom = false;
-            this.offsetX = 0;
-            this.offsetY = 0;
+                // navigation
+                next() {
+                    this.index = (this.index + 1) % this.images.length;
+                    this.resetZoom();
+                },
+                prev() {
+                    this.index = (this.index - 1 + this.images.length) % this.images.length;
+                    this.resetZoom();
+                },
+                go(i) {
+                    this.index = i;
+                    this.resetZoom();
+                },
+                close(dlg) {
+                    dlg?.close();
+                    this.resetZoom();
+                },
+                resetZoom() {
+                    this.zoom = false;
+                    this.offsetX = 0;
+                    this.offsetY = 0;
+                }
+            }
         }
-    }
-}
-</script>
+    </script>
 
-{{-- ✅ Bandeau RGPD --}}
+    {{-- ✅ Bandeau RGPD --}}
     <x-cookie-banner />
 </body>
+
 </html>

@@ -31,7 +31,7 @@ class ProjectSeeder extends Seeder
             [
                 'title' => 'Osez-Dire-Non',
                 'description' => 'Blog participatif avec rôles, publicité payante et modération.',
-                'image' => 'images/projects/cover-ODN.png',
+                'image' => 'images/projects/cover-ODN.webp',
                 'tech' => ['Laravel', 'Blade', 'Tailwind CSS', 'Stripe'],
                 'github' => 'https://github.com/sosylvie1/OsezDireNon',
                 'readme' => 'https://github.com/sosylvie1/OsezDireNon#readme',
@@ -54,7 +54,7 @@ class ProjectSeeder extends Seeder
             [
                 'title' => 'Mamie4Family',
                 'description' => 'Plateforme reliant familles et mamies à louer pour occasions spéciales, en cours de développement (dont la réservation à implémenter).',
-                'image' => 'images/projects/mamie4family.png',
+                'image' => 'images/projects/mamie4family.webp',
                 'tech' => ['PHP', 'MySQL', 'HTML', 'CSS'],
                 'github' => 'https://github.com/sosylvie1/Mamie4Family',
                 'readme' => 'https://github.com/sosylvie1/Mamie4Family#readme',
