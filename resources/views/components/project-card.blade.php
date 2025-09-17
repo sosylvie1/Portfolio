@@ -20,7 +20,6 @@
         $p = $p->toArray();
     }
 
-    // ✅ plus besoin de json_decode
     $figmaImages = $p['figma_images'] ?? [];
     $techs = $p['tech'] ?? [];
 
@@ -36,19 +35,22 @@
     $live = $p['live'] ?? null;
     $readme = $p['readme'] ?? null;
 
-    $videoHref = !empty($p['video']) ? asset($p['video']) : (!empty($p['video_webm']) ? asset($p['video_webm']) : null);
+    // ✅ Gestion vidéos (string ou array)
+    $videos = [];
+    if (!empty($p['video'])) {
+        $videos[] = asset($p['video']);
+    }
+    if (!empty($p['video_webm'])) {
+        $videos = is_array($p['video_webm'])
+            ? array_map(fn($v) => asset($v), $p['video_webm'])
+            : [asset($p['video_webm'])];
+    }
 @endphp
 
 <article
     class="group flex flex-col h-full bg-white/80 backdrop-blur border rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden"
     data-tech="{{ e($techString) }}">
 
-    {{-- Image principale --}}
-    {{-- <div class="aspect-[16/9] overflow-hidden bg-gray-100">
-        <img src="{{ $src }}" alt="{{ $title ? 'Aperçu du projet ' . $title : 'Aperçu du projet' }}"
-            loading="lazy" decoding="async"
-            class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" />
-    </div> --}}
     {{-- Image principale --}}
     <img src="{{ $src }}" alt="{{ $title ? 'Aperçu du projet ' . $title : 'Aperçu du projet' }}" loading="lazy"
         decoding="async" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]">
@@ -93,29 +95,55 @@
                     README
                 </a>
             @endif
-            @if ($videoHref)
-                <a href="{{ $videoHref }}" target="_blank"
-                    class="inline-flex items-center gap-2 text-xs md:text-sm px-3 py-2 rounded-xl border hover:bg-gray-50">
-                    Vidéo
-                </a>
+
+            {{-- Bouton Vidéos + Modale Alpine --}}
+            @if (!empty($videos))
+                <div x-data="{ openVideo: false, current: 0, vids: @js($videos) }">
+                    <button type="button" @click="openVideo = true; current = 0"
+                        class="inline-flex items-center gap-2 text-xs md:text-sm px-3 py-2 rounded-xl border hover:bg-gray-50">
+                        🎥 Voir la démo
+                    </button>
+<!-- ✅ Modale Vidéo Plein Écran -->
+<div x-show="openVideo" x-transition
+     class="fixed inset-0 bg-black/90 flex items-center justify-center z-50"
+     style="display:none">
+    <div class="relative w-[95%] md:w-[85%] lg:w-[75%]">
+        <!-- Bouton fermer -->
+        <button @click="
+            document.querySelectorAll('#video-player').forEach(v => { v.pause(); v.currentTime = 0; });
+            openVideo = false
+        "
+            class="absolute top-2 right-2 text-white hover:text-gray-300 text-4xl font-bold z-50">✖</button>
+
+        <!-- Vidéo -->
+        <video id="video-player" autoplay controls playsinline
+               class="w-full max-h-[90vh] rounded-lg shadow-lg object-contain">
+            <source src="{{ asset($videos[0] ?? '') }}" type="video/webm">
+            Votre navigateur ne supporte pas la vidéo.
+        </video>
+    </div>
+</div>
+
+
+
+
+                </div>
             @endif
 
             {{-- Bouton Maquettes + Modale Alpine --}}
             @if (!empty($figmaImages))
                 <div x-data="{ openGallery: false, index: 0, images: {{ json_encode(array_map(fn($img) => asset($img), $figmaImages)) }} }">
-
                     <button type="button" @click="openGallery = true"
                         class="inline-flex items-center gap-2 text-xs md:text-sm px-3 py-2 rounded-xl border hover:bg-gray-50">
                         Maquettes
                     </button>
 
-                    {{-- Modale Lightbox --}}
+                    <!-- Modale Lightbox -->
                     <div x-show="openGallery" x-transition
                         class="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50 px-2"
                         style="display:none" role="dialog" aria-modal="true" aria-label="Visionneuse de maquettes">
 
                         <div class="relative w-full h-full flex items-center justify-center">
-
                             <!-- Bouton fermer -->
                             <button @click="openGallery = false"
                                 class="absolute top-4 right-4 bg-white rounded-full p-2 shadow hover:bg-gray-200 z-50"

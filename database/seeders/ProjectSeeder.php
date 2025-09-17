@@ -22,6 +22,7 @@ class ProjectSeeder extends Seeder
                 'date' => '2025-09-01',
                 'is_published' => true,
                 'order' => 1,
+                'live' => null, // ✅ forcer à null pour ne plus afficher "Démo"
             ]
 
         );

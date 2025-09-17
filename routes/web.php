@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Auth\NewPasswordController;
 
 // Contrôleurs publics
 use App\Http\Controllers\HomeController;
@@ -18,6 +20,28 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ProjectController as AdminProjectController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ContactAdminController;
+
+/*
+|--------------------------------------------------------------------------
+| Routes mot de passe oublié
+|--------------------------------------------------------------------------
+*/
+
+// Mot de passe oublié : affichage du formulaire
+Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
+    ->name('password.request');
+
+// Envoi du mail avec le lien
+Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
+    ->name('password.email');
+
+// Réinitialisation : affichage du formulaire avec token
+Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
+    ->name('password.reset');
+
+// Réinitialisation : soumission du nouveau mot de passe
+Route::post('reset-password', [NewPasswordController::class, 'store'])
+    ->name('password.store');
 
 /*
 |--------------------------------------------------------------------------

@@ -35,6 +35,14 @@
                 name="password" required autocomplete="current-password" />
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
+        <div class="flex items-center justify-end mt-4">
+    @if (Route::has('password.request'))
+        <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
+            Mot de passe oublié ?
+        </a>
+    @endif
+</div>
+
 
         <!-- Remember Me -->
         <div class="flex items-center">

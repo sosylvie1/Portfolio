@@ -28,5 +28,7 @@ class Project extends Model
     protected $casts = [
         'tech' => 'array',
         'figma_images' => 'array', // ✅ conversion JSON -> array automatique
+        'video_webm' => 'array', 
     ];
+    
 }
