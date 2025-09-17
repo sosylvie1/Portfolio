@@ -5,7 +5,7 @@
 @section('content')
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10" role="main" aria-labelledby="projects-title">
 
-        <!-- Titre de page -->
+        
         <!-- Titre de page -->
         <header class="text-center mb-10">
             <h1 id="projects-title" class="text-3xl sm:text-4xl font-extrabold text-gray-800 mb-4 tracking-tight"
@@ -105,44 +105,7 @@
         </section>
 
 
-        {{-- <!-- ✅ Section Projets aboutis -->
-        <section id="projets-aboutis" class="mb-16">
-            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-10 text-gray-800">
-                🔍
-            </h2>
-            <div x-data="timeline({ startY: 2024, startM: 6, months: 19 })" class="relative select-none">
-                <!-- Ligne rose -->
-                <div class="absolute top-1/2 left-0 right-0 h-1 bg-pink-400 rounded-full transform -translate-y-1/2"></div>
-
-                <!-- Liste des mois -->
-                <div class="relative flex justify-between items-center">
-                    <template x-for="(m, i) in months" :key="m.key">
-                        <div class="flex flex-col items-center w-full cursor-pointer" @click="toggle(m.key)">
-                            <!-- Bulle -->
-                            <div class="w-16 h-16 flex items-center justify-center rounded-full border-2 text-xs sm:text-sm font-semibold transition"
-                                :class="selected === m.key ?
-                                    'bg-pink-500 text-white border-pink-600 shadow-lg scale-105' :
-                                    'bg-white text-gray-800 border-gray-300 hover:bg-gray-100'">
-                                <span x-text="m.short"></span>
-                            </div>
-                            
-                            {{-- <!-- Label sous la bulle -->
-          <span class="mt-2 text-[10px] sm:text-xs text-gray-600" x-text="m.label"></span> --}}
-        {{-- </div>
-                    </template>
-                </div>
-
-                <!-- Bouton reset -->
-                <div class="mt-6 text-center">
-                    <button @click="clearFilter"
-                        class="px-4 py-2 text-xs sm:text-sm bg-gray-100 border rounded-lg hover:bg-gray-200 transition">
-                        🔄 Réinitialiser
-                    </button>
-                </div>
-            </div>
-        </section> --}}
-
-
+        
         <!-- Grille projets -->
         <section id="projectsGrid" aria-labelledby="projects-list-title">
             <h2 id="projects-list-title" class="sr-only">Liste des projets</h2>

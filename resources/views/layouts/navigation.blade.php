@@ -1,7 +1,7 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+<nav x-data="{ open: false, userMenu: false }" class="bg-white border-b border-gray-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16 items-center">
-            
+
             <!-- Logo + Nom -->
             <a href="{{ route('accueil') }}" class="flex items-center space-x-2">
                 <img src="{{ asset('images/logo.webp') }}" alt="Logo personnel de Sylvie Seguinaud"
@@ -26,21 +26,35 @@
                 <li><x-nav-link :href="route('contact.show')" :active="request()->routeIs('contact.show')">Contact</x-nav-link></li>
             </ul>
 
-            <!-- Boutons (connexion / déconnexion) -->
-            <ul class="hidden sm:flex items-center space-x-4">
+            <!-- Menu utilisateur (desktop) -->
+            <div class="hidden sm:flex items-center space-x-4">
                 @auth
-                    <li><span class="text-sm text-gray-600">👤 {{ Auth::user()->name }}</span></li>
-                    <li>
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit" class="text-sm text-gray-700 hover:underline">Déconnexion</button>
-                        </form>
-                    </li>
+                    <!-- Bouton avatar + nom -->
+                    <div class="relative" @click.away="userMenu = false">
+                        <button @click="userMenu = !userMenu" class="flex items-center space-x-2 text-sm text-gray-700 hover:text-pink-600 focus:outline-none">
+                            <span>👤 {{ Auth::user()->name }}</span>
+                            <svg class="h-4 w-4 transform transition-transform" :class="userMenu ? 'rotate-180' : ''" 
+                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+
+                        <!-- Menu déroulant -->
+                        <div x-show="userMenu" x-transition 
+                             class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
+                            <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🏠 Mon espace</a>
+                            <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">⚙️ Mon profil</a>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">🚪 Déconnexion</button>
+                            </form>
+                        </div>
+                    </div>
                 @else
-                    <li><a href="{{ route('login') }}" class="text-sm text-gray-700 hover:underline">Connexion</a></li>
-                    <li><a href="{{ route('register') }}" class="text-sm text-gray-700 hover:underline">Inscription</a></li>
+                    <a href="{{ route('login') }}" class="text-sm text-gray-700 hover:underline">Connexion</a>
+                    <a href="{{ route('register') }}" class="text-sm text-gray-700 hover:underline">Inscription</a>
                 @endauth
-            </ul>
+            </div>
 
             <!-- Hamburger (mobile) -->
             <button @click="open = true" class="sm:hidden p-2 rounded-md text-gray-600 hover:bg-gray-100"
@@ -54,14 +68,10 @@
     </div>
 
     <!-- Sidebar mobile -->
-    <div x-show="open" class="fixed inset-0 z-50 flex"
-         role="dialog" aria-label="Menu mobile"
-         x-transition:enter="transition ease-out duration-200"
-         x-transition:enter-start="opacity-0"
-         x-transition:enter-end="opacity-100"
-         x-transition:leave="transition ease-in duration-150"
-         x-transition:leave-start="opacity-100"
-         x-transition:leave-end="opacity-0">
+    <div x-show="open" class="fixed inset-0 z-50 flex" role="dialog" aria-label="Menu mobile"
+         x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-150"
+         x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
 
         <!-- Fond -->
         <div class="fixed inset-0 bg-black bg-opacity-50" @click="open = false"></div>
@@ -71,8 +81,7 @@
                :class="open ? 'translate-x-0' : '-translate-x-full'">
 
             <!-- Bouton fermer -->
-            <button @click="open = false" 
-                    class="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+            <button @click="open = false" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
                     aria-label="Fermer le menu de navigation">
                 <span aria-hidden="true">✖</span>
             </button>
@@ -94,11 +103,12 @@
                 <hr class="my-4">
 
                 @auth
-                    <li><a href="{{ route('dashboard') }}" class="block text-gray-800 hover:text-pink-600">Mon espace</a></li>
+                    <li><a href="{{ route('dashboard') }}" class="block text-gray-800 hover:text-pink-600">🏠 Mon espace</a></li>
+                    <li><a href="{{ route('profile.edit') }}" class="block text-gray-800 hover:text-pink-600">⚙️ Mon profil</a></li>
                     <li>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <button type="submit" class="w-full text-left text-gray-800 hover:text-pink-600">Déconnexion</button>
+                            <button type="submit" class="w-full text-left text-gray-800 hover:text-pink-600">🚪 Déconnexion</button>
                         </form>
                     </li>
                 @else

@@ -100,7 +100,7 @@ En plus de Laravel, Blade et Tailwind, j’ai utilisé :
 - 🎨 **ImageMagick (Magick)** : optimisation des images (`.jpg → .webp`), ajout de filigranes (watermark), orientation automatique.  
 - 📂 **DB Browser for SQLite** : gestion et vérification des données de test dans la base SQLite.  
 - 🛠️ **Lighthouse (Chrome DevTools)** : audit complet en **Performance / Accessibilité / SEO**.  
-- 🚀 **PlanetHoster** : hébergement en production avec gestion du domaine et certificat SSL.  
+- 🚀 **PlanetHoster** : hébergement en production avec gestion du domaine et sous domaine, redirection,ainsi que Database MySQL (en prod) et certificat SSL  
 - 📝 **Visual Studio Code (VS Code)** : éditeur principal, extensions pour Laravel, Tailwind, et Prettier pour formater le code.  
 - 🧭 **Git & GitHub** : gestion de versions et suivi de l’évolution du projet.  
 

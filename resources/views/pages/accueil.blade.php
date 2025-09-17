@@ -87,9 +87,13 @@
                         sizes="(max-width: 640px) 300px, 504px">
 
                     {{-- ✅ Filigrane --}}
-                    <div class="watermark absolute bottom-2 right-2 text-xs text-gray-700 bg-white/50 px-2 py-1 rounded">
+                    {{-- <div class="watermark absolute bottom-2 right-2 text-xs text-gray-700 bg-white/50 px-2 py-1 rounded">
+                        © Sylvie Seguinaud
+                    </div> --}}
+                    <div class="watermark absolute bottom-2 right-2 text-xs text-gray-700">
                         © Sylvie Seguinaud
                     </div>
+
                 </div>
 
                 <!-- ✅ Figcaption utile pour accessibilité -->

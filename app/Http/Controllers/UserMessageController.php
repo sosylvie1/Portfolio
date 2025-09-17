@@ -9,6 +9,39 @@ use Illuminate\Support\Facades\Auth;
 class UserMessageController extends Controller
 {
     /**
+     * ✉️ Formulaire nouveau message
+     */
+    public function create()
+    {
+        return view('user.messages.create');
+    }
+
+    /**
+     * 📩 Envoi d’un nouveau message
+     */
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'subject' => 'nullable|string|max:255',
+            'message' => 'required|string|min:5',
+        ]);
+
+        ContactMessage::create([
+            'company_name' => null,
+            'name'         => Auth::user()->name,
+            'email'        => Auth::user()->email,
+            'subject'      => $validated['subject'] ?? null,
+            'message'      => $validated['message'],
+            'user_id'      => Auth::id(),
+            'recipient_id' => 1, // ⚡ ID admin
+            'is_read'      => 0,
+        ]);
+
+        return redirect()->route('messages.envoyes')
+                         ->with('success', '✅ Votre message a bien été envoyé.');
+    }
+
+    /**
      * 📤 Messages envoyés
      */
     public function sent()
@@ -51,67 +84,120 @@ class UserMessageController extends Controller
     /**
      * 👁️ Voir un message
      */
-   public function show($id)
-{
-    $message = ContactMessage::withTrashed()
-        ->where('id', $id)
-        ->where(function ($q) {
-            $q->where('user_id', Auth::id())
-              ->orWhere('recipient_id', Auth::id());
-        })
-        ->firstOrFail();
+    public function show($id)
+    {
+        $message = ContactMessage::withTrashed()
+            ->where('id', $id)
+            ->where(function ($q) {
+                $q->where('user_id', Auth::id())
+                  ->orWhere('recipient_id', Auth::id());
+            })
+            ->firstOrFail();
 
-    return view('user.messages.show', compact('message'));
-}
+        // Marquer comme lu si je suis le destinataire
+        if ($message->recipient_id === Auth::id() && !$message->is_read) {
+            $message->update(['is_read' => 1]);
+        }
 
+        return view('user.messages.show', compact('message'));
+    }
 
+    /**
+     * 📌 Marquer un message comme lu
+     */
+    public function mark($id)
+    {
+        $message = ContactMessage::where('recipient_id', Auth::id())
+            ->where('id', $id)
+            ->firstOrFail();
+
+        $message->update(['is_read' => 1]);
+
+        return back()->with('success', 'Message marqué comme lu.');
+    }
+
+    /**
+     * 📧 Répondre à un message
+     */
+    public function reply(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'reply' => 'required|string|min:3',
+        ]);
+
+        $original = ContactMessage::where(function ($q) {
+                $q->where('user_id', Auth::id())
+                  ->orWhere('recipient_id', Auth::id());
+            })
+            ->where('id', $id)
+            ->firstOrFail();
+
+        ContactMessage::create([
+            'company_name' => 'Utilisateur',
+            'name'         => Auth::user()->name,
+            'email'        => Auth::user()->email,
+            'subject'      => 'Réponse : ' . ($original->subject ?? 'Sans sujet'),
+            'message'      => $validated['reply'],
+            'user_id'      => Auth::id(),
+            'recipient_id' => 1, // ⚡ id admin
+            'is_read'      => 0,
+        ]);
+
+        return redirect()->route('messages.envoyes')
+                         ->with('success', '✅ Réponse envoyée à l’admin.');
+    }
 
     /**
      * ❌ Supprimer un message (soft delete)
      */
     public function destroy($id)
-{
-    $message = ContactMessage::where('id', $id)
-        ->where(function ($q) {
-            $q->where('user_id', Auth::id())
-              ->orWhere('recipient_id', Auth::id());
-        })
-        ->firstOrFail();
+    {
+        $message = ContactMessage::where('id', $id)
+            ->where(function ($q) {
+                $q->where('user_id', Auth::id())
+                  ->orWhere('recipient_id', Auth::id());
+            })
+            ->firstOrFail();
 
-    $message->delete();
+        $message->delete();
 
-    return redirect()->route('messages.supprimes')
-        ->with('success', 'Message supprimé avec succès.');
-}
+        return redirect()->route('messages.supprimes')
+                         ->with('success', 'Message supprimé avec succès.');
+    }
 
     /**
- * 🔄 Restaurer un message supprimé (soft delete)
- */
-public function restore($id)
-{
-    $message = \App\Models\ContactMessage::onlyTrashed()
-        ->where('user_id', \Auth::id())
-        ->findOrFail($id);
+     * 🔄 Restaurer un message supprimé
+     */
+    public function restore($id)
+    {
+        $message = ContactMessage::onlyTrashed()
+            ->where(function ($q) {
+                $q->where('user_id', Auth::id())
+                  ->orWhere('recipient_id', Auth::id());
+            })
+            ->findOrFail($id);
 
-    $message->restore();
+        $message->restore();
 
-    return redirect()->route('messages.supprimes')
-        ->with('success', 'Message restauré avec succès.');
-}
+        return redirect()->route('messages.supprimes')
+                         ->with('success', 'Message restauré avec succès.');
+    }
 
-/**
- * ❌ Supprimer définitivement un message
- */
-public function forceDelete($id)
-{
-    $message = \App\Models\ContactMessage::onlyTrashed()
-        ->where('user_id', \Auth::id())
-        ->findOrFail($id);
+    /**
+     * ❌ Supprimer définitivement un message
+     */
+    public function forceDelete($id)
+    {
+        $message = ContactMessage::onlyTrashed()
+            ->where(function ($q) {
+                $q->where('user_id', Auth::id())
+                  ->orWhere('recipient_id', Auth::id());
+            })
+            ->findOrFail($id);
 
-    $message->forceDelete();
+        $message->forceDelete();
 
-    return redirect()->route('messages.supprimes')
-        ->with('success', 'Message supprimé définitivement.');
-}
-
+        return redirect()->route('messages.supprimes')
+                         ->with('success', 'Message supprimé définitivement.');
+    }
 }

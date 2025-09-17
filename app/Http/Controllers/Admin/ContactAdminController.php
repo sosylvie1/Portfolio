@@ -5,12 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ContactMessage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Mail\ContactReplyMail;
+use Illuminate\Support\Facades\Mail;
 
 class ContactAdminController extends Controller
 {
-    /**
-     * Liste des messages (tous les utilisateurs)
-     */
     public function index(Request $request)
     {
         $q = ContactMessage::query()
@@ -22,9 +22,6 @@ class ContactAdminController extends Controller
         return view('admin.contacts.index', compact('messages'));
     }
 
-    /**
-     * Détail d’un message
-     */
     public function show(ContactMessage $message)
     {
         if (!$message->is_read) {
@@ -34,9 +31,6 @@ class ContactAdminController extends Controller
         return view('admin.contacts.show', compact('message'));
     }
 
-    /**
-     * Marquer / dé-marquer comme lu
-     */
     public function mark(ContactMessage $message)
     {
         $message->update(['is_read' => ! $message->is_read]);
@@ -47,38 +41,43 @@ class ContactAdminController extends Controller
         );
     }
 
-    /**
-     * Suppression définitive d’un message
-     */
     public function destroy(ContactMessage $message)
     {
+        // Si tu veux soft delete → garder comme ça :
         $message->delete();
 
+        // Si tu veux supprimer définitivement :
+        // $message->forceDelete();
+
         return redirect()->route('admin.contacts.index')
-                         ->with('success', 'Message supprimé définitivement.');
+                         ->with('success', 'Message supprimé.');
     }
 
-    /**
-     * Répondre à un utilisateur (optionnel)
-     * -> Cela crée un "received" côté user
-     */
     public function reply(Request $request, ContactMessage $message)
     {
         $validated = $request->validate([
             'reply' => 'required|string|min:3',
         ]);
 
+        // Enregistre la réponse dans la base
         ContactMessage::create([
             'company_name' => 'Administration',
             'name'         => 'Sylvie (Admin)',
-            'email'        => 'contact@sylvieseguinaud.fr',
+            'email'        => 'contact@sylvie-seguinaud.fr', // expéditeur
             'subject'      => 'Réponse : ' . ($message->subject ?? 'Sans sujet'),
             'message'      => $validated['reply'],
-            'user_id'      => $message->user_id,
-            'status'       => 'received', // 🟢 côté user
+            'user_id'      => Auth::id(),          // expéditeur = admin
+            'recipient_id' => $message->user_id,   // destinataire = user
+            'is_read'      => 0,                   // non lu par défaut
         ]);
 
-        return redirect()->route('admin.contacts.show', $message->id)
-                         ->with('success', 'Réponse envoyée à l’utilisateur.');
+        // Envoi aussi par email
+        Mail::to($message->email)->send(
+            new ContactReplyMail($validated['reply'], $message)
+        );
+
+        return redirect()->route('admin.contacts.index')
+                 ->with('success', '✅ Réponse envoyée avec succès à ' . $message->name);
+
     }
 }

@@ -41,6 +41,10 @@ Route::get('/projets', [ProjectController::class, 'index'])->name('projets.index
 Route::get('/contact', [ContactController::class, 'showForm'])->name('contact.show');
 Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
 
+Route::get('/messages/create', [ContactController::class, 'create'])->name('messages.create');
+Route::post('/messages', [ContactController::class, 'store'])->name('messages.store');
+
+
 // --- CV PUBLIC ---
 Route::get('/cv-public', [CvController::class, 'show'])->name('cv.public');     // page publique
 Route::get('/cv/preview', [CvController::class, 'preview'])->name('cv.preview'); // aperçu PDF public
@@ -68,16 +72,51 @@ Route::middleware(['auth'])->group(function () {
     | Messages utilisateur
     |--------------------------------------------------------------------------
     */
-    Route::prefix('messages')->group(function () {
-        Route::get('/envoyes', [UserMessageController::class, 'sent'])->name('messages.envoyes');
-        Route::get('/recus', [UserMessageController::class, 'received'])->name('messages.recus');
-        Route::get('/supprimes', [UserMessageController::class, 'deleted'])->name('messages.supprimes');
+    // Route::prefix('messages')->group(function () {
+    //     Route::get('/envoyes', [UserMessageController::class, 'sent'])->name('messages.envoyes');
+    //     Route::get('/recus', [UserMessageController::class, 'received'])->name('messages.recus');
+    //     Route::get('/supprimes', [UserMessageController::class, 'deleted'])->name('messages.supprimes');
 
-        Route::get('/{id}', [UserMessageController::class, 'show'])->name('messages.show');
-        Route::delete('/{id}', [UserMessageController::class, 'destroy'])->name('messages.destroy');
-        Route::patch('/{id}/restore', [UserMessageController::class, 'restore'])->name('messages.restore');
-        Route::delete('/{id}/force', [UserMessageController::class, 'forceDelete'])->name('messages.forceDelete');
-    });
+    //     Route::get('/{id}', [UserMessageController::class, 'show'])->name('messages.show');
+    //     Route::delete('/{id}', [UserMessageController::class, 'destroy'])->name('messages.destroy');
+    //     Route::patch('/{id}/restore', [UserMessageController::class, 'restore'])->name('messages.restore');
+    //     Route::delete('/{id}/force', [UserMessageController::class, 'forceDelete'])->name('messages.forceDelete');
+    // });
+
+
+
+Route::middleware('auth')->prefix('messages')->name('messages.')->group(function () {
+    // ✉️ Nouveau message
+    Route::get('/nouveau', [UserMessageController::class, 'create'])->name('create');
+    Route::post('/nouveau', [UserMessageController::class, 'store'])->name('store');
+
+    // 📤 Messages envoyés
+    Route::get('/envoyes', [UserMessageController::class, 'sent'])->name('envoyes');
+
+    // 📥 Messages reçus
+    Route::get('/recus', [UserMessageController::class, 'received'])->name('recus');
+
+    // 🗑️ Messages supprimés
+    Route::get('/supprimes', [UserMessageController::class, 'deleted'])->name('supprimes');
+
+    // 👁️ Voir un message
+    Route::get('/{id}', [UserMessageController::class, 'show'])->name('show');
+
+    // ❌ Supprimer (soft delete)
+    Route::delete('/{id}', [UserMessageController::class, 'destroy'])->name('destroy');
+
+    // 🔄 Restaurer
+    Route::patch('/{id}/restore', [UserMessageController::class, 'restore'])->name('restore');
+
+    // ❌ Supprimer définitivement
+    Route::delete('/{id}/force', [UserMessageController::class, 'forceDelete'])->name('forceDelete');
+
+    // 📌 Marquer comme lu
+    Route::patch('/{id}/mark', [UserMessageController::class, 'mark'])->name('mark');
+
+    // 📧 Répondre
+    Route::post('/{id}/reply', [UserMessageController::class, 'reply'])->name('reply');
+});
 
     // --- CV UTILISATEUR CONNECTÉ ---
     Route::get('/cv', [CvController::class, 'index'])->name('user.cv'); // suivi dans dashboard
@@ -102,12 +141,22 @@ Route::middleware(['auth', 'is_admin'])
 
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
 
-        // Gestion messages reçus
-        Route::get('/contacts', [ContactAdminController::class, 'index'])->name('contacts.index');
-        Route::get('/contacts/{message}', [ContactAdminController::class, 'show'])->name('contacts.show');
-        Route::post('/contacts/{message}/reply', [ContactAdminController::class, 'reply'])->name('contacts.reply');
-        Route::delete('/contacts/{message}', [ContactAdminController::class, 'destroy'])->name('contacts.destroy');
+    //     // Gestion messages reçus
+    //     Route::get('/contacts', [ContactAdminController::class, 'index'])->name('contacts.index');
+    //     Route::get('/contacts/{message}', [ContactAdminController::class, 'show'])->name('contacts.show');
+    //     Route::post('/contacts/{message}/reply', [ContactAdminController::class, 'reply'])->name('contacts.reply');
+    //     Route::delete('/contacts/{message}', [ContactAdminController::class, 'destroy'])->name('contacts.destroy');
+    //    Route::patch('/admin/contacts/{message}/mark', [ContactAdminController::class, 'mark'])
+    // ->name('admin.contacts.mark');
+    Route::get('/contacts', [ContactAdminController::class, 'index'])->name('contacts.index');
+    Route::get('/contacts/{message}', [ContactAdminController::class, 'show'])->name('contacts.show');
+    Route::delete('/contacts/{message}', [ContactAdminController::class, 'destroy'])->name('contacts.destroy');
 
+    // ✅ Route pour marquer comme lu / non lu
+    Route::patch('/contacts/{message}/mark', [ContactAdminController::class, 'mark'])->name('contacts.mark');
+
+    // ✅ Route pour répondre
+    Route::post('/contacts/{message}/reply', [ContactAdminController::class, 'reply'])->name('contacts.reply');
         // Gestion utilisateurs
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
         Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');

@@ -18,11 +18,12 @@ class ProjectSeeder extends Seeder
                 'image' => 'images/projects/cover-portfolio.webp',
                 'tech' => ['Laravel', 'Blade', 'Tailwind', 'AlpineJS'],
                 'github' => 'https://github.com/sosylvie1/portfolio',
-                'live' => 'https://sylvie-seguinaud.fr',
+                'readme' => 'https://github.com/sosylvie1/portfolio#readme',
                 'date' => '2025-09-01',
                 'is_published' => true,
                 'order' => 1,
             ]
+
         );
 
         // Blog éducatif

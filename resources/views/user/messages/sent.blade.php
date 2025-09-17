@@ -3,38 +3,38 @@
 @section('content')
     <h1 class="text-2xl font-bold mb-6">📤 Messages envoyés</h1>
 
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        @forelse($messages as $message)
-            <div class="bg-white rounded-xl shadow-md hover:shadow-lg transition p-4 flex flex-col justify-between">
-                <!-- Sujet + Date -->
-                <div>
-                    <h2 class="text-lg font-semibold text-gray-800 mb-2">
-                        {{ $message->subject }}
-                    </h2>
-                    <p class="text-sm text-gray-500">
-                        Envoyé le {{ $message->created_at->format('d/m/Y H:i') }}
-                    </p>
-                </div>
-
-                <!-- Actions -->
-                <div class="mt-4 flex justify-between">
-                    <a href="{{ route('messages.show', $message->id) }}" 
-                       class="inline-flex items-center px-3 py-1 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition">
-                        👀 Voir
-                    </a>
-
-                    <form action="{{ route('messages.destroy', $message->id) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" 
-                                class="inline-flex items-center px-3 py-1 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition">
-                            🗑️ Supprimer
-                        </button>
-                    </form>
-                </div>
-            </div>
-        @empty
-            <p class="text-gray-500 col-span-full text-center">Aucun message envoyé.</p>
-        @endforelse
-    </div>
+    @if($messages->isEmpty())
+        <p class="text-gray-500">Aucun message envoyé.</p>
+    @else
+        <div class="overflow-x-auto bg-white shadow rounded-lg">
+            <table class="min-w-full border border-gray-200 text-sm">
+                <thead class="bg-gray-100 border-b text-gray-700">
+                    <tr>
+                        <th class="px-4 py-2 text-left">Sujet</th>
+                        <th class="px-4 py-2 text-left">À</th>
+                        <th class="px-4 py-2 text-left">Date</th>
+                        <th class="px-4 py-2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($messages as $msg)
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="px-4 py-2">{{ $msg->subject ?? '—' }}</td>
+                            <td class="px-4 py-2">Admin</td>
+                            <td class="px-4 py-2">{{ $msg->created_at->format('d/m/Y H:i') }}</td>
+                            <td class="px-4 py-2 flex gap-2">
+                                <a href="{{ route('messages.show', $msg->id) }}"
+                                   class="text-blue-600 hover:underline">👀 Voir</a>
+                                <form action="{{ route('messages.destroy', $msg->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-red-600 hover:underline">🗑 Supprimer</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    @endif
 @endsection

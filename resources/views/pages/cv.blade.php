@@ -19,12 +19,12 @@
                 <div class="mt-6">
                     @auth
                         <a href="{{ route('cv.download') }}"
-                           class="px-4 py-2 rounded-lg bg-pink-600 text-white hover:bg-pink-700 shadow">
+                            class="px-4 py-2 rounded-lg bg-pink-600 text-white hover:bg-pink-700 shadow">
                             📥 Télécharger le CV
                         </a>
                     @else
                         <a href="{{ route('login') }}"
-                           class="px-4 py-2 rounded-lg bg-gray-800 text-white hover:bg-black shadow">
+                            class="px-4 py-2 rounded-lg bg-gray-800 text-white hover:bg-black shadow">
                             🔒 Connectez-vous pour télécharger
                         </a>
                     @endauth
@@ -45,15 +45,15 @@
                             <address class="not-italic">
                                 📍 Le Cannet (06110) | 📱 06 07 65 44 33 |
                                 <a href="mailto:sosylvie1@gmail.com"
-                                   class="text-pink-800 hover:text-pink-900 underline font-bold">
-                                   📧 sosylvie1@gmail.com
+                                    class="text-pink-800 hover:text-pink-900 underline font-bold">
+                                    📧 sosylvie1@gmail.com
                                 </a><br>
                                 Permis B – Véhiculée
                             </address>
                             <p>
                                 <strong>Née le 15 mars 1962 à Cannes</strong> — Poissons assumée 🐟, intuitive, créative, et
                                 un brin rebelle.
-                                Après 10 ans à l'étranger (Dubaï, USA, Mexique, Liban), je me suis reconvertie dans le
+                                Après 12 ans à l'étranger (Dubaï, USA, Mexique), je me suis reconvertie dans le
                                 développement web à 63 ans.
                                 Curieuse, passionnée, autonome, j’ai décidé de continuer à apprendre, contribuer, et créer.
                             </p>
@@ -61,12 +61,12 @@
 
                         <!-- Portrait -->
                         <figure class="md:w-1/4 mt-3 md:mt-0 flex justify-center" role="group"
-                                aria-labelledby="caption-sylvie">
+                            aria-labelledby="caption-sylvie">
                             <div class="photo-container w-[360px] h-[160px] relative">
                                 <img src="{{ asset('images/sylviecv.webp') }}"
-                                     alt="Portrait professionnel de Sylvie Seguinaud"
-                                     class="protected-image rounded-md shadow-md w-full h-full object-cover"
-                                     width="405" height="304" loading="lazy" decoding="async">
+                                    alt="Portrait professionnel de Sylvie Seguinaud"
+                                    class="protected-image rounded-md shadow-md w-full h-full object-cover" width="405"
+                                    height="304" loading="lazy" decoding="async">
                                 <div class="watermark">© Sylvie Seguinaud</div>
                             </div>
                             <figcaption id="caption-sylvie" class="sr-only">
@@ -192,7 +192,7 @@
             <!-- CTA -->
             <div class="flex flex-col sm:flex-row gap-4 mt-6">
                 <a href="{{ route('projets.index') }}"
-                   class="block w-full sm:w-auto bg-pink-600 hover:bg-pink-700 text-white px-6 py-3 rounded-lg font-medium shadow transition text-center">
+                    class="block w-full sm:w-auto bg-pink-600 hover:bg-pink-700 text-white px-6 py-3 rounded-lg font-medium shadow transition text-center">
                     Découvrir mes projets
                 </a>
             </div>
