@@ -126,7 +126,9 @@
     @stack('head') {{-- ✅ Ici seront injectés les JSON-LD spécifiques aux pages --}}
 </head>
 
-<body class="font-sans antialiased bg-gray-100 text-gray-900">
+{{-- <body class="font-sans antialiased bg-gray-100 text-gray-900"> --}}
+<body class="font-sans antialiased bg-gray-100 text-gray-900 @yield('body-class')">
+
     <div class="min-h-screen flex flex-col">
 
         {{-- ✅ Navigation principale --}}
@@ -202,7 +204,7 @@
     @stack('scripts')
 
     {{-- Alpine via CDN si non chargé dans app.js --}}
-    <script src="https://unpkg.com/alpinejs" defer></script>
+    {{-- <script src="https://unpkg.com/alpinejs" defer></script> --}}
 
     {{-- Google Analytics (uniquement si cookies acceptés) --}}
     @php $cookieConsent = request()->cookie('cookie_consent'); @endphp
@@ -211,7 +213,7 @@
     @endif
 
     {{-- SYNC AUTO : si connectée + cookie présent + DB vide -> enregistrement --}}
-    @if (Auth::check() && $cookieConsent && !Auth::user()->cookie_consent_status)
+    {{-- @if (Auth::check() && $cookieConsent && !Auth::user()->cookie_consent_status)
         <script>
             (async () => {
                 try {
@@ -232,18 +234,18 @@
                 }
             })();
         </script>
-    @endif
+    @endif --}}
 
-    {{-- ✅ Script global : protection images --}}
-    <script>
+    {{-- ✅ Script global : protection images /dans customs.js --}}
+    {{-- <script>
         document.addEventListener("contextmenu", function(e) {
             if (e.target.classList.contains('protected-image')) {
                 e.preventDefault();
                 alert("🚫 Copie interdite !");
             }
         });
-    </script>
-    <script>
+    </script> --}}
+    {{-- <script>
         function gallery(images) {
             return {
                 images,
@@ -280,6 +282,7 @@
             }
         }
     </script>
+ --}}
 
     {{-- ✅ Bandeau RGPD --}}
     <x-cookie-banner />

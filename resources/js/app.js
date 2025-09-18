@@ -1,7 +1,13 @@
-import './bootstrap';
+import "./bootstrap";
+import Alpine from "alpinejs";
+import csp from "@alpinejs/csp";
 
-import Alpine from 'alpinejs';
+// Activer CSP
+Alpine.plugin(csp);
+
+// Importer ton custom.js
+import "./custom.js";
 
 window.Alpine = Alpine;
-
 Alpine.start();
+

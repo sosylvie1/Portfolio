@@ -62,7 +62,10 @@ Route::get('/cgu', fn () => view('pages.cgu'))->name('cgu');
 Route::get('/projets', [ProjectController::class, 'index'])->name('projets.index');
 
 // Formulaire de contact public
-Route::get('/contact', [ContactController::class, 'showForm'])->name('contact.show');
+// Route::get('/contact', [ContactController::class, 'showForm'])->name('contact.show');
+// Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
+// Formulaire de contact public
+Route::get('/contact', [ContactController::class, 'showForm'])->name('contact');
 Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
 
 Route::get('/messages/create', [ContactController::class, 'create'])->name('messages.create');

@@ -1,12 +1,11 @@
 @extends('layouts.app')
 
 @section('title', 'Contact')
+@section('body-class', 'contact-page') {{-- ✅ pour cibler la page dans custom.js --}}
 
 @section('content')
 <div class="max-w-3xl mx-auto py-12 px-6">
     <h1 class="text-3xl font-bold text-center mb-8">📩 Contact</h1>
-
-    
 
     <form action="{{ route('contact.send') }}" method="POST"
           class="bg-white/60 backdrop-blur-md border border-pink-100 shadow-lg rounded-xl p-6 space-y-6"
@@ -81,7 +80,8 @@
 </div>
 @endsection
 
-@push('head')
+
+{{-- @push('head')
 <script type="application/ld+json">
 {!! json_encode([
     '@context' => 'https://schema.org',
@@ -107,4 +107,4 @@
     ]
 ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
 </script>
-@endpush
+@endpush --}}

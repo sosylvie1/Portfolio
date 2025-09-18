@@ -2,12 +2,132 @@
 @tailwind components;
 @tailwind utilities;
 .name-logo {
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins", sans-serif;
     font-weight: 600; /* plus gras */
     font-size: 1.5rem; /* ajuste la taille */
     letter-spacing: 0.5px; /* espace entre lettres */
-};
-.no-scrollbar::-webkit-scrollbar { display: none; }
-.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+}
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
 
+/* ===============================
+   Voyages page
+   =============================== */
+.photo-container {
+    position: relative;
+    overflow: hidden;
+}
+.protected-image {
+    pointer-events: none;
+    user-select: none;
+}
+.watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-30deg);
+    color: rgba(255, 255, 255, 0.25);
+    font-size: clamp(1rem, 4vw, 3rem);
+    font-weight: bold;
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+}
+.lightbox button {
+    z-index: 50;
+}
+/* ===============================
+   Accueil page
+   =============================== */
+.photo-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.protected-image {
+    pointer-events: none; /* bloque drag & drop */
+    user-select: none; /* empêche sélection */
+}
+
+/* ✅ Filigrane centré et en diagonale */
+.watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-30deg);
+    color: rgba(255, 255, 255, 0.25);
+    font-size: clamp(1rem, 3vw, 2rem);
+    font-weight: bold;
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+}
+
+
+/* 🌍 Styles généraux pour toutes les pages */
+.photo-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.protected-image {
+    pointer-events: none;   /* bloque drag & drop */
+    user-select: none;      /* empêche sélection */
+}
+
+.watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-30deg);
+    color: rgba(255, 255, 255, 0.25);
+    font-size: clamp(1rem, 3vw, 2rem);
+    font-weight: bold;
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* 👤 Spécifique à la page À propos */
+body.a-propos-page h1 {
+    color: #1f2937; /* gris foncé Tailwind par défaut */
+}
+
+body.a-propos-page blockquote {
+    border-left-color: #ec4899; /* rose Tailwind */
+    color: #be185d;
+}
+
+.photo-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.protected-image {
+    pointer-events: none;
+    user-select: none;
+}
+
+.watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-30deg);
+    color: rgba(255, 255, 255, 0.25);
+    font-size: clamp(1rem, 3vw, 2rem);
+    font-weight: bold;
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* 🎯 Spécifique à la page CV */
+body.cv-page h1 {
+    color: #1f2937; /* gris foncé */
+}
 

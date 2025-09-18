@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('body-class', 'accueil')
 @section('content')
     <!-- Section d’introduction avec fond pastel -->
     <section class="bg-pink-50 py-16 px-4" aria-labelledby="section-intro">
@@ -107,7 +107,7 @@
     </section>
 @endsection
 {{-- pour relier la page d’accueil à moi --}}
-@push('head')
+{{-- @push('head')
     <script type="application/ld+json">
 {!! json_encode([
     '@context' => 'https://schema.org',
@@ -165,4 +165,4 @@
             user-select: none;
         }
     </style>
-@endpush
+@endpush --}}

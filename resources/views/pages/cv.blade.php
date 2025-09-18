@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('body-class', 'cv-page') {{-- ✅ utile pour custom.js --}}
+
 @section('content')
     <section class="bg-pink-50 py-16 px-4" aria-labelledby="parcours-title">
         <div class="max-w-5xl mx-auto space-y-12">
@@ -10,21 +12,19 @@
                     Mon parcours professionnel
                 </h1>
 
-                <!-- ✅ Texte amélioré contraste -->
                 <p class="text-pink-800 mt-2 italic font-semibold">
                     Téléchargez mon CV ou explorez-le ci-dessous
                 </p>
 
-                <!-- Bouton selon connexion -->
                 <div class="mt-6">
                     @auth
                         <a href="{{ route('cv.download') }}"
-                            class="px-4 py-2 rounded-lg bg-pink-600 text-white hover:bg-pink-700 shadow">
+                           class="px-4 py-2 rounded-lg bg-pink-600 text-white hover:bg-pink-700 shadow">
                             📥 Télécharger le CV
                         </a>
                     @else
                         <a href="{{ route('login') }}"
-                            class="px-4 py-2 rounded-lg bg-gray-800 text-white hover:bg-black shadow">
+                           class="px-4 py-2 rounded-lg bg-gray-800 text-white hover:bg-black shadow">
                             🔒 Connectez-vous pour télécharger
                         </a>
                     @endauth
@@ -45,7 +45,7 @@
                             <address class="not-italic">
                                 📍 Le Cannet (06110) | 📱 06 07 65 44 33 |
                                 <a href="mailto:sosylvie1@gmail.com"
-                                    class="text-pink-800 hover:text-pink-900 underline font-bold">
+                                   class="text-pink-800 hover:text-pink-900 underline font-bold">
                                     📧 sosylvie1@gmail.com
                                 </a><br>
                                 Permis B – Véhiculée
@@ -61,12 +61,12 @@
 
                         <!-- Portrait -->
                         <figure class="md:w-1/4 mt-3 md:mt-0 flex justify-center" role="group"
-                            aria-labelledby="caption-sylvie">
+                                aria-labelledby="caption-sylvie">
                             <div class="photo-container w-[360px] h-[160px] relative">
                                 <img src="{{ asset('images/sylviecv.webp') }}"
-                                    alt="Portrait professionnel de Sylvie Seguinaud"
-                                    class="protected-image rounded-md shadow-md w-full h-full object-cover" width="405"
-                                    height="304" loading="lazy" decoding="async">
+                                     alt="Portrait professionnel de Sylvie Seguinaud"
+                                     class="protected-image rounded-md shadow-md w-full h-full object-cover"
+                                     width="405" height="304" loading="lazy" decoding="async">
                                 <div class="watermark">© Sylvie Seguinaud</div>
                             </div>
                             <figcaption id="caption-sylvie" class="sr-only">
@@ -192,37 +192,10 @@
             <!-- CTA -->
             <div class="flex flex-col sm:flex-row gap-4 mt-6">
                 <a href="{{ route('projets.index') }}"
-                    class="block w-full sm:w-auto bg-pink-600 hover:bg-pink-700 text-white px-6 py-3 rounded-lg font-medium shadow transition text-center">
+                   class="block w-full sm:w-auto bg-pink-600 hover:bg-pink-700 text-white px-6 py-3 rounded-lg font-medium shadow transition text-center">
                     Découvrir mes projets
                 </a>
             </div>
         </div>
     </section>
 @endsection
-
-@push('styles')
-    <style>
-        .photo-container {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .protected-image {
-            pointer-events: none;
-            user-select: none;
-        }
-
-        .watermark {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-30deg);
-            color: rgba(255, 255, 255, 0.25);
-            font-size: clamp(1rem, 3vw, 2rem);
-            font-weight: bold;
-            white-space: nowrap;
-            pointer-events: none;
-            user-select: none;
-        }
-    </style>
-@endpush
