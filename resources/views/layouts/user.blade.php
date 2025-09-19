@@ -34,10 +34,39 @@
                     @click="open=false">🏠 Tableau de bord</a>
 
                 <a href="{{ route('user.cv') }}" class="block px-3 py-2 rounded hover:bg-gray-100 transition"
-                    @click="open=false">📄 Mon CV</a>
+                    @click="open=false">📄 CV</a>
+                {{-- //avoir --}}
+                {{-- Messages --}}
+                <div>
+                    <a href="{{ route('messages.index') }}"
+                        class="block px-3 py-2 rounded hover:bg-gray-100 transition font-semibold"
+                        @click="open=false">✉️ Messages</a>
 
-                <a href="{{ route('messages.index') }}" class="block px-3 py-2 rounded hover:bg-gray-100 transition"
-                    @click="open=false">✉️ Messages</a>
+                    <div class="ml-6 mt-1 space-y-1 text-sm">
+                        <a href="{{ route('messages.recus') }}"
+                            class="block px-3 py-1 rounded hover:bg-gray-100 transition" @click="open=false">📥
+                            Reçus</a>
+                        <a href="{{ route('messages.envoyes') }}"
+                            class="block px-3 py-1 rounded hover:bg-gray-100 transition" @click="open=false">📤
+                            Envoyés</a>
+                        <a href="{{ route('messages.supprimes') }}"
+                            class="block px-3 py-1 rounded hover:bg-gray-100 transition" @click="open=false">🗑️
+                            Supprimés</a>
+                    </div>
+                </div>
+                {{-- Profil --}}
+                <div>
+                    <a href="{{ route('profile.show') }}"
+                        class="block px-3 py-2 rounded hover:bg-gray-100 transition font-semibold"
+                        @click="open=false">👤 Profil</a>
+
+                    <div class="ml-6 mt-1 space-y-1 text-sm">
+                        <a href="{{ route('profile.edit') }}"
+                            class="block px-3 py-1 rounded hover:bg-gray-100 transition" @click="open=false">✏️
+                            Modifier</a>
+                    </div>
+                </div>
+
 
                 <div class="pt-2 mt-2 border-t">
                     <a href="{{ route('accueil') }}" class="block px-3 py-2 rounded hover:bg-gray-100 transition"

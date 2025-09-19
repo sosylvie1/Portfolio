@@ -4,6 +4,21 @@
  */
 
 // ----------------------------
+// 🌍 Variables globales depuis <meta>
+// ----------------------------
+const baseUrl = document.querySelector("meta[name=base-url]")?.content || "";
+const aproposUrl =
+    document.querySelector("meta[name=apropos-url]")?.content || "";
+const cvUrl = document.querySelector("meta[name=cv-url]")?.content || "";
+const contactUrl =
+    document.querySelector("meta[name=contact-url]")?.content || "";
+const voyagesUrl =
+    document.querySelector("meta[name=voyages-url]")?.content || "";
+const projetsUrl =
+    document.querySelector("meta[name=projets-url]")?.content || "";
+const planUrl = document.querySelector("meta[name=plan-url]")?.content || "";
+
+// ----------------------------
 // 🚫 Protection des images
 // ----------------------------
 document.addEventListener("contextmenu", function (e) {
@@ -66,18 +81,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 name: "Accueil - Portfolio de Sylvie Seguinaud",
                 description:
                     "Bienvenue sur le portfolio de Sylvie Seguinaud, développeuse web. Découvrez mes projets, mes compétences et mon parcours international.",
-                url: "{{ url('/') }}",
+                url: baseUrl,
                 inLanguage: "fr",
                 isPartOf: {
                     "@type": "WebSite",
                     name: "Portfolio de Sylvie Seguinaud",
-                    url: "{{ url('/') }}",
+                    url: baseUrl,
                 },
                 about: {
                     "@type": "Person",
                     name: "Sylvie Seguinaud",
                     jobTitle: "Développeuse Web & Web Mobile",
-                    url: "{{ url('/a-propos') }}",
+                    url: aproposUrl,
                     sameAs: [
                         "https://www.linkedin.com/in/sylvie-seguinaud",
                         "https://github.com/sosylvie1",
@@ -136,12 +151,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 name: "Voyages - Portfolio de Sylvie Seguinaud",
                 description:
                     "Découvrez une sélection de mes voyages à travers le monde en images : Dubaï, Vietnam, Mexique, Liban, et bien plus.",
-                url: "{{ url('/voyages') }}",
+                url: voyagesUrl,
                 inLanguage: "fr",
                 isPartOf: {
                     "@type": "WebSite",
                     name: "Portfolio de Sylvie Seguinaud",
-                    url: "{{ url('/') }}",
+                    url: baseUrl,
                 },
             },
             null,
@@ -169,12 +184,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 name: voyageTitle,
                 description: voyageDescription,
                 image: mainImage,
-                url: "{{ url()->current() }}",
+                url: window.location.href,
                 inLanguage: "fr",
                 isPartOf: {
                     "@type": "WebSite",
                     name: "Portfolio de Sylvie Seguinaud",
-                    url: "{{ url('/') }}",
+                    url: baseUrl,
                 },
             },
             null,
@@ -221,12 +236,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 name: "Mes Projets - Portfolio de Sylvie Seguinaud",
                 description:
                     "Découvrez une sélection de projets réalisés par Sylvie Seguinaud pendant sa formation en développement web.",
-                url: "{{ url('/projets') }}",
+                url: projetsUrl,
                 inLanguage: "fr",
                 isPartOf: {
                     "@type": "WebSite",
                     name: "Portfolio de Sylvie Seguinaud",
-                    url: "{{ url('/') }}",
+                    url: baseUrl,
                 },
                 mainEntity: {
                     "@type": "ItemList",
@@ -253,18 +268,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 name: "À propos - Portfolio de Sylvie Seguinaud",
                 description:
                     "Découvrez le parcours professionnel et personnel de Sylvie Seguinaud, développeuse web reconvertie, passionnée de numérique et de voyages.",
-                url: "{{ url('/a-propos') }}",
+                url: aproposUrl,
                 inLanguage: "fr",
                 isPartOf: {
                     "@type": "WebSite",
                     name: "Portfolio de Sylvie Seguinaud",
-                    url: "{{ url('/') }}",
+                    url: baseUrl,
                 },
                 mainEntity: {
                     "@type": "Person",
                     name: "Sylvie Seguinaud",
                     jobTitle: "Développeuse Web & Web Mobile",
-                    url: "{{ url('/a-propos') }}",
+                    url: aproposUrl,
                     sameAs: [
                         "https://www.linkedin.com/in/sylvie-seguinaud",
                         "https://github.com/sosylvie1",
@@ -278,7 +293,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// JSON-LD CV
+// 📄 JSON-LD CV
 document.addEventListener("DOMContentLoaded", () => {
     if (document.body.classList.contains("cv-page")) {
         const ldJsonScript = document.createElement("script");
@@ -291,8 +306,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 jobTitle: "Développeuse Web & Web Mobile",
                 description:
                     "CV complet de Sylvie Seguinaud : parcours professionnel, expériences internationales, compétences et formations.",
-                url: "{{ url('/cv') }}",
-                image: "{{ asset('images/sylviecv.webp') }}",
+                url: cvUrl,
+                image: baseUrl + "/images/sylviecv.webp",
                 address: {
                     "@type": "PostalAddress",
                     addressLocality: "Le Cannet",
@@ -323,14 +338,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 name: "Contact - Portfolio de Sylvie Seguinaud",
                 description:
                     "Page de contact pour joindre Sylvie Seguinaud, développeuse web. Envoyez un message ou retrouvez mes coordonnées.",
-                url: "{{ url('/contact') }}",
+                url: contactUrl,
                 inLanguage: "fr",
                 isPartOf: {
                     "@type": "WebSite",
                     name: "Portfolio de Sylvie Seguinaud",
-                    url: "{{ url('/') }}",
+                    url: baseUrl,
                 },
-                mainEntityOfPage: "{{ url('/contact') }}",
+                mainEntityOfPage: contactUrl,
                 about: {
                     "@type": "Person",
                     name: "Sylvie Seguinaud",
@@ -360,51 +375,43 @@ document.addEventListener("DOMContentLoaded", () => {
                 name: "Plan du site - Portfolio de Sylvie Seguinaud",
                 description:
                     "Plan du site portfolio de Sylvie Seguinaud pour naviguer facilement entre les pages principales.",
-                url: "{{ url('/plan-du-site') }}",
+                url: planUrl,
                 inLanguage: "fr",
                 mainEntity: {
                     "@type": "SiteNavigationElement",
                     name: "Navigation principale",
                     hasPart: [
-                        {
-                            "@type": "WebPage",
-                            name: "Accueil",
-                            url: "{{ route('accueil') }}",
-                        },
+                        { "@type": "WebPage", name: "Accueil", url: baseUrl },
                         {
                             "@type": "WebPage",
                             name: "À propos",
-                            url: "{{ route('a-propos') }}",
+                            url: aproposUrl,
                         },
                         {
                             "@type": "WebPage",
                             name: "Projets",
-                            url: "{{ route('projets.index') }}",
+                            url: projetsUrl,
                         },
-                        {
-                            "@type": "WebPage",
-                            name: "CV",
-                            url: "{{ route('cv.public') }}",
-                        },
+                        { "@type": "WebPage", name: "CV", url: cvUrl },
                         {
                             "@type": "WebPage",
                             name: "Contact",
-                            url: "{{ route('contact.show') }}",
+                            url: contactUrl,
                         },
                         {
                             "@type": "WebPage",
                             name: "Politique de confidentialité",
-                            url: "{{ route('confidentialite') }}",
+                            url: baseUrl + "/confidentialite",
                         },
                         {
                             "@type": "WebPage",
                             name: "Conditions générales d’utilisation",
-                            url: "{{ route('cgu') }}",
+                            url: baseUrl + "/cgu",
                         },
                         {
                             "@type": "WebPage",
                             name: "Plan du site",
-                            url: "{{ route('plan-du-site') }}",
+                            url: planUrl,
                         },
                     ],
                 },
@@ -415,3 +422,129 @@ document.addEventListener("DOMContentLoaded", () => {
         document.head.appendChild(ldJsonScript);
     }
 });
+// ----------------------------
+// 🍪 Gestion ouverture/fermeture du bandeau cookies
+// ----------------------------
+document.addEventListener("DOMContentLoaded", () => {
+    const openBtn = document.getElementById("open-cookie-modal");
+    const closeBtn = document.getElementById("close-cookie-modal");
+    const modal = document.getElementById("cookie-modal");
+
+    if (openBtn && modal) {
+        openBtn.addEventListener("click", () => {
+            modal.classList.remove("hidden");
+        });
+    }
+
+    if (closeBtn && modal) {
+        closeBtn.addEventListener("click", () => {
+            modal.classList.add("hidden");
+        });
+    }
+});
+
+// ----------------------------
+// 📱 Menu burger
+// ----------------------------
+document.addEventListener("DOMContentLoaded", () => {
+    const burgerBtn = document.getElementById("burger-button");
+    const navMenu = document.getElementById("mobile-menu");
+
+    if (burgerBtn && navMenu) {
+        burgerBtn.addEventListener("click", () => {
+            navMenu.classList.toggle("hidden");
+        });
+    }
+});
+
+// ----------------------------
+// 👤 Dropdown utilisateur
+// ----------------------------
+document.addEventListener("DOMContentLoaded", () => {
+    const userBtn = document.getElementById("user-menu-button");
+    const userMenu = document.getElementById("user-menu");
+
+    if (userBtn && userMenu) {
+        userBtn.addEventListener("click", () => {
+            userMenu.classList.toggle("hidden");
+        });
+    }
+});
+
+// ----------------------------
+// 🎥 Modale vidéo projets
+// ----------------------------
+document.addEventListener("DOMContentLoaded", () => {
+    const openBtns = document.querySelectorAll("[data-video-open]");
+    const closeBtns = document.querySelectorAll("[data-video-close]");
+
+    openBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const target = document.getElementById(btn.dataset.videoOpen);
+            if (target) target.classList.remove("hidden");
+        });
+    });
+
+    closeBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const target = document.getElementById(btn.dataset.videoClose);
+            if (target) target.classList.add("hidden");
+        });
+    });
+});
+
+// ----------------------------
+// 🖼️ Lightbox voyages
+// ----------------------------
+document.addEventListener("DOMContentLoaded", () => {
+    const openBtns = document.querySelectorAll("[data-lightbox-open]");
+    const closeBtns = document.querySelectorAll("[data-lightbox-close]");
+
+    openBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const target = document.getElementById(btn.dataset.lightboxOpen);
+            if (target) target.classList.remove("hidden");
+        });
+    });
+
+    closeBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const target = document.getElementById(btn.dataset.lightboxClose);
+            if (target) target.classList.add("hidden");
+        });
+    });
+});
+/**
+ * ✅ custom.js
+ * Gestion du menu mobile + dropdown utilisateur
+ */
+document.addEventListener("DOMContentLoaded", () => {
+    // --- Burger Menu ---
+    const burgerButton = document.getElementById("burger-button");
+    const mobileMenu = document.getElementById("mobile-menu");
+
+    if (burgerButton && mobileMenu) {
+        burgerButton.addEventListener("click", () => {
+            mobileMenu.classList.toggle("hidden");
+        });
+    }
+
+    // --- Dropdown utilisateur ---
+    const userMenuButton = document.getElementById("user-menu-button");
+    const userDropdown = document.getElementById("user-dropdown");
+
+    if (userMenuButton && userDropdown) {
+        userMenuButton.addEventListener("click", (e) => {
+            e.stopPropagation(); // évite fermeture immédiate
+            userDropdown.classList.toggle("hidden");
+        });
+
+        // Fermer si clic en dehors
+        document.addEventListener("click", (e) => {
+            if (!userMenuButton.contains(e.target) && !userDropdown.contains(e.target)) {
+                userDropdown.classList.add("hidden");
+            }
+        });
+    }
+});
+

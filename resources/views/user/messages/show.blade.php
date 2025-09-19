@@ -21,25 +21,34 @@
         <div class="flex justify-between items-center">
             <!-- Retour -->
             <a href="{{ url()->previous() }}"
-               class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition">
+                class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition">
                 ⬅ Retour
             </a>
 
             <!-- Si reçu → bouton répondre -->
-            @if($message->recipient_id === Auth::id())
-                <form action="{{ route('messages.reply', $message->id) }}" method="POST" class="flex gap-2">
+            @if ($message->recipient_id === Auth::id())
+                <form action="{{ route('messages.reply', $message->id) }}" method="POST"
+                    class="flex flex-col gap-3 w-full">
                     @csrf
-                    <input type="text" name="reply" placeholder="Votre réponse..."
-                           class="border rounded p-2 text-sm w-64" required>
-                    <button type="submit"
-                            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                        📧 Répondre
-                    </button>
-                </form>
+                    <textarea name="reply" placeholder="Votre réponse..." class="border rounded p-3 text-sm w-full min-h-[120px]"
+                        required></textarea>
+                    <div class="flex justify-end gap-2">
+                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                            📧 Répondre
+                        </button>
+                        <form action="{{ route('messages.destroy', $message->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">
+                                🗑 Supprimer
+                            </button>
+                        </form>
+                    </div>
+                    </form>
             @endif
 
             <!-- Si supprimé → options restauration/suppression -->
-            @if($message->trashed())
+            @if ($message->trashed())
                 <div class="flex gap-2">
                     <form action="{{ route('messages.restore', $message->id) }}" method="POST">
                         @csrf
@@ -57,14 +66,14 @@
                     </form>
                 </div>
             @else
-                <!-- Suppression normale -->
+                {{-- <!-- Suppression normale -->
                 <form action="{{ route('messages.destroy', $message->id) }}" method="POST">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600">
                         🗑 Supprimer
                     </button>
-                </form>
+                </form> --}}
             @endif
         </div>
     </div>

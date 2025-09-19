@@ -116,7 +116,7 @@ Route::middleware('auth')->prefix('messages')->name('messages.')->group(function
     // ✉️ Nouveau message
     Route::get('/nouveau', [UserMessageController::class, 'create'])->name('create');
     Route::post('/nouveau', [UserMessageController::class, 'store'])->name('store');
-
+    Route::get('/', [UserMessageController::class, 'index'])->name('index'); 
     // 📤 Messages envoyés
     Route::get('/envoyes', [UserMessageController::class, 'sent'])->name('envoyes');
 

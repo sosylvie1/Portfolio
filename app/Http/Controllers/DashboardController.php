@@ -16,7 +16,8 @@ class DashboardController extends Controller
         }
 
         // ✅ Toujours définir la variable (même si null)
-        $lastCvDownload = $user->lastCvDownload;
+        // $lastCvDownload = $user->lastCvDownload;
+        $lastCvDownload = $user->lastCvDownload ?? null;
 
         return view('user.dashboard', compact('user', 'lastCvDownload'));
     }

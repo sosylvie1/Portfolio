@@ -9,6 +9,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    {{-- ✅ Meta URLs pour custom.js --}}
+    <meta name="base-url" content="{{ url('/') }}">
+    <meta name="apropos-url" content="{{ url('/a-propos') }}">
+    <meta name="cv-url" content="{{ url('/cv') }}">
+    <meta name="contact-url" content="{{ url('/contact') }}">
+    <meta name="voyages-url" content="{{ url('/voyages') }}">
+    <meta name="projets-url" content="{{ url('/projets') }}">
+    <meta name="plan-url" content="{{ url('/plan-du-site') }}">
+
     {{-- ✅ Balise robots SEO --}}
     <meta name="robots" content="@yield('robots', 'index, follow')">
 
@@ -126,7 +135,6 @@
     @stack('head') {{-- ✅ Ici seront injectés les JSON-LD spécifiques aux pages --}}
 </head>
 
-{{-- <body class="font-sans antialiased bg-gray-100 text-gray-900"> --}}
 <body class="font-sans antialiased bg-gray-100 text-gray-900 @yield('body-class')">
 
     <div class="min-h-screen flex flex-col">
@@ -144,7 +152,10 @@
         @endisset
 
         {{-- ✅ Contenu principal --}}
-        <main id="main-content" class="flex-1 py-6 sm:py-10 px-2 sm:px-4" role="main">
+        <main id="main-content"
+            class="flex-1 px-2 sm:px-4 @if (request()->routeIs('accueil')) pt-2 sm:pt-4 @else pt-6 sm:pt-10 @endif"
+            role="main">
+
             <div class="max-w-4xl mx-auto" aria-live="assertive">
                 {{-- 🔥 Messages flash --}}
                 @if (session('cookie_success'))
@@ -211,78 +222,6 @@
     @if ($cookieConsent === 'accepted')
         {{-- <script>/* Google Analytics */</script> --}}
     @endif
-
-    {{-- SYNC AUTO : si connectée + cookie présent + DB vide -> enregistrement --}}
-    {{-- @if (Auth::check() && $cookieConsent && !Auth::user()->cookie_consent_status)
-        <script>
-            (async () => {
-                try {
-                    await fetch('{{ route('cookie-consent.store') }}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
-                            'Accept': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            status: '{{ $cookieConsent }}'
-                        }),
-                        credentials: 'same-origin',
-                    });
-                } catch (e) {
-                    /* ignore */
-                }
-            })();
-        </script>
-    @endif --}}
-
-    {{-- ✅ Script global : protection images /dans customs.js --}}
-    {{-- <script>
-        document.addEventListener("contextmenu", function(e) {
-            if (e.target.classList.contains('protected-image')) {
-                e.preventDefault();
-                alert("🚫 Copie interdite !");
-            }
-        });
-    </script> --}}
-    {{-- <script>
-        function gallery(images) {
-            return {
-                images,
-                index: 0,
-                zoom: false,
-                isPanning: false,
-                startX: 0,
-                startY: 0,
-                offsetX: 0,
-                offsetY: 0,
-
-                // navigation
-                next() {
-                    this.index = (this.index + 1) % this.images.length;
-                    this.resetZoom();
-                },
-                prev() {
-                    this.index = (this.index - 1 + this.images.length) % this.images.length;
-                    this.resetZoom();
-                },
-                go(i) {
-                    this.index = i;
-                    this.resetZoom();
-                },
-                close(dlg) {
-                    dlg?.close();
-                    this.resetZoom();
-                },
-                resetZoom() {
-                    this.zoom = false;
-                    this.offsetX = 0;
-                    this.offsetY = 0;
-                }
-            }
-        }
-    </script>
- --}}
 
     {{-- ✅ Bandeau RGPD --}}
     <x-cookie-banner />

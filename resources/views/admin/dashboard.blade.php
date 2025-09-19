@@ -28,8 +28,8 @@
       <div class="text-3xl font-semibold">{{ $totalUsers }}</div>
       <div class="mt-2 text-xs text-gray-400">Voir tous les utilisateurs →</div>
     </a>
-
-    <a href="{{ route('admin.contacts.index') }}" class="block p-5 rounded-2xl border bg-white shadow hover:shadow-md transition">
+{{-- //avoir  --}}
+    <a href="{{ route('messages.index') }}" class="block p-5 rounded-2xl border bg-white shadow hover:shadow-md transition">
       <div class="text-sm text-gray-500">Messages</div>
       <div class="text-3xl font-semibold">{{ $totalMessages }}</div>
       <div class="mt-2 text-xs text-gray-400">Voir tous les messages →</div>

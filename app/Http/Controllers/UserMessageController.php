@@ -15,6 +15,38 @@ class UserMessageController extends Controller
     {
         return view('user.messages.create');
     }
+    /**
+ * 📑 Page d'accueil des messages (index)
+ */
+/**
+ * 📑 Page d'accueil des messages (index)
+ */
+public function index()
+{
+    $user = Auth::user();
+
+    // Tous les messages (reçus + envoyés)
+    $messages = ContactMessage::where(function ($q) use ($user) {
+            $q->where('user_id', $user->id)
+              ->orWhere('recipient_id', $user->id);
+        })
+        ->latest()
+        ->get();
+
+    // Messages envoyés
+    $sentMessages = ContactMessage::where('user_id', $user->id)
+        ->latest()
+        ->get();
+
+    // Messages reçus
+    $receivedMessages = ContactMessage::where('recipient_id', $user->id)
+        ->latest()
+        ->get();
+
+    return view('user.messages.index', compact('messages', 'sentMessages', 'receivedMessages'));
+}
+
+
 
     /**
      * 📩 Envoi d’un nouveau message
