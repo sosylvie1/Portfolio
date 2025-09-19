@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ContactMessage;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ContactMessageMail; // 👈 nouvelle mailable
 
 class ContactController extends Controller
 {
@@ -30,7 +31,8 @@ class ContactController extends Controller
             'message'      => 'required|string|min:10',
         ]);
 
-        ContactMessage::create([
+        // 1. Sauvegarde en BDD
+        $message = ContactMessage::create([
             'company_name' => $validated['company_name'] ?? null,
             'name'         => $validated['name'],
             'email'        => $validated['email'],
@@ -40,6 +42,11 @@ class ContactController extends Controller
             'recipient_id' => 1,    // ⚡ admin (id=1)
             'is_read'      => 0,
         ]);
+
+        // 2. Envoi d’un mail à ta boîte Roundcube
+        Mail::to('contact@sylvie-seguinaud.fr')->send(
+            new ContactMessageMail($message)
+        );
 
         return back()->with('success', '✅ Merci, votre message a bien été envoyé.');
     }

@@ -1,10 +1,6 @@
 import "./bootstrap";
-import Alpine from "alpinejs";
-import csp from "@alpinejs/csp";
+import Alpine from "alpinejs/dist/module.esm.js"; // version sans eval()
 import "./custom.js";
-
-// Charger le plugin AVANT Alpine.start()
-// Alpine.plugin(csp);
 
 window.Alpine = Alpine;
 Alpine.start();
