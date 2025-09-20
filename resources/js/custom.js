@@ -547,4 +547,55 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+// // === Mot de passe visible / masqué ===
+// document.addEventListener("DOMContentLoaded", () => {
+//     const input = document.getElementById('password');
+//     const eyeOpen = document.getElementById('eyeOpen');
+//     const eyeClosed = document.getElementById('eyeClosed');
+//     const btn = document.querySelector('[data-toggle-password]');
+
+//     if (btn && input && eyeOpen && eyeClosed) {
+//         btn.addEventListener("click", () => {
+//             if (input.type === "password") {
+//                 input.type = "text";
+//                 eyeOpen.classList.add("hidden");
+//                 eyeClosed.classList.remove("hidden");
+//             } else {
+//                 input.type = "password";
+//                 eyeOpen.classList.remove("hidden");
+//                 eyeClosed.classList.add("hidden");
+//             }
+//         });
+//     }
+// });
+
+// === Mot de passe visible / masqué ===
+document.addEventListener("DOMContentLoaded", () => {
+    // Sélectionne tous les boutons avec l'attribut data-toggle-password
+    const toggleButtons = document.querySelectorAll('[data-toggle-password]');
+
+    toggleButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            // Trouve l'input lié (le champ juste avant le bouton)
+            const input = btn.parentElement.querySelector('input[type="password"], input[type="text"]');
+
+            // Trouve les icônes à l'intérieur du bouton
+            const eyeOpen = btn.querySelector("svg#eyeOpen, svg#eyeOpen_confirmation");
+            const eyeClosed = btn.querySelector("svg#eyeClosed, svg#eyeClosed_confirmation");
+
+            if (input && eyeOpen && eyeClosed) {
+                if (input.type === "password") {
+                    input.type = "text";
+                    eyeOpen.classList.add("hidden");
+                    eyeClosed.classList.remove("hidden");
+                } else {
+                    input.type = "password";
+                    eyeOpen.classList.remove("hidden");
+                    eyeClosed.classList.add("hidden");
+                }
+            }
+        });
+    });
+});
+
 
