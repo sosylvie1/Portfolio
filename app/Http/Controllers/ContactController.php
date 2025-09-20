@@ -4,23 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ContactMessage;
+use App\Mail\ContactMessageMail;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\ContactMessageMail; // 👈 nouvelle mailable
 
 class ContactController extends Controller
 {
-    /**
-     * 📩 Formulaire public de contact
-     */
+    // Affiche le formulaire public
     public function showForm()
     {
-        // Vue pour les visiteurs (ex: resources/views/pages/contact.blade.php)
         return view('pages.contact');
     }
 
-    /**
-     * 📤 Traitement du formulaire public
-     */
+    // Traite l’envoi du formulaire public
     public function send(Request $request)
     {
         $validated = $request->validate([
@@ -28,22 +24,18 @@ class ContactController extends Controller
             'name'         => 'required|string|max:255',
             'email'        => 'required|email',
             'subject'      => 'nullable|string|max:255',
-            'message'      => 'required|string|min:10',
+            'message'      => 'required|string',
         ]);
 
-        // 1. Sauvegarde en BDD
-        $message = ContactMessage::create([
-            'company_name' => $validated['company_name'] ?? null,
-            'name'         => $validated['name'],
-            'email'        => $validated['email'],
-            'subject'      => $validated['subject'] ?? null,
-            'message'      => $validated['message'],
-            'user_id'      => null, // ⚡ utilisateur public => pas d'ID
-            'recipient_id' => 1,    // ⚡ admin (id=1)
-            'is_read'      => 0,
-        ]);
+        // Champs système selon ta BDD
+        $validated['user_id'] = Auth::id();   // null si visiteur
+        $validated['is_read'] = false;        // non lu
+        $validated['status']  = 'nouveau';    // statut initial
 
-        // 2. Envoi d’un mail à ta boîte Roundcube
+        // Enregistrement
+        $message = ContactMessage::create($validated);
+
+        // Envoi mail vers ta boîte Roundcube
         Mail::to('contact@sylvie-seguinaud.fr')->send(
             new ContactMessageMail($message)
         );

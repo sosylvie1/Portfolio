@@ -3,69 +3,83 @@
 @section('title', 'Messages reçus')
 
 @section('content')
-    <h1 class="text-2xl font-bold mb-6">📥 Messages reçus</h1>
+<div class="p-6 bg-white rounded-lg shadow">
+    <h1 class="text-2xl font-bold mb-4">📥 Messages reçus</h1>
 
-    {{-- ✅ Affichage des messages flash --}}
     @if(session('success'))
-        <div class="mb-4 p-3 rounded bg-green-100 text-green-800 border border-green-300">
+        <div class="mb-4 p-3 bg-green-100 text-green-800 rounded">
             {{ session('success') }}
         </div>
     @endif
 
-    @if($messages->isEmpty())
-        <p class="text-gray-600">Aucun message pour l’instant.</p>
-    @else
-        <div class="overflow-x-auto bg-white shadow rounded-lg">
-            <table class="min-w-full border border-gray-200 text-sm">
-                <thead class="bg-gray-100 border-b text-gray-700">
-                    <tr>
-                        <th class="px-4 py-2 text-left">De</th>
-                        <th class="px-4 py-2 text-left">Sujet</th>
-                        <th class="px-4 py-2 text-left">Date</th>
-                        <th class="px-4 py-2 text-left">Lu ?</th>
-                        <th class="px-4 py-2">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($messages as $msg)
-                        <tr class="border-b hover:bg-gray-50 {{ $msg->is_read ? '' : 'bg-pink-50' }}">
-                            <td class="px-4 py-2">{{ $msg->name }} ({{ $msg->email }})</td>
-                            <td class="px-4 py-2">{{ $msg->subject ?? '—' }}</td>
-                            <td class="px-4 py-2">{{ $msg->created_at->format('d/m/Y H:i') }}</td>
-                            <td class="px-4 py-2">
-                                {{ $msg->is_read ? '✅' : '❌' }}
-                            </td>
-                            <td class="px-4 py-2 flex gap-2">
-
-                                {{-- Voir le message --}}
-                                <a href="{{ route('admin.contacts.show', $msg->id) }}"
-                                   class="text-blue-600 hover:underline">Voir</a>
-
-                                {{-- Toggle lu / non lu --}}
-                                <form action="{{ route('admin.contacts.mark', $msg->id) }}" method="POST">
-                                    @csrf
-                                    @method('PATCH')
-                                    <button type="submit" class="text-green-600 hover:underline">
-                                        {{ $msg->is_read ? 'Marquer non lu' : 'Marquer lu' }}
-                                    </button>
-                                </form>
-
-                                {{-- Supprimer --}}
-                                <form action="{{ route('admin.contacts.destroy', $msg->id) }}" method="POST"
-                                      onsubmit="return confirm('Supprimer définitivement ?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="text-red-600 hover:underline">Supprimer</button>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-
-        <div class="mt-4">
-            {{ $messages->links() }}
-        </div>
-    @endif
+    <table class="w-full border-collapse border border-gray-200">
+        <thead class="bg-gray-100">
+            <tr>
+                <th class="border p-2">Entreprise</th>
+                <th class="border p-2">Nom</th>
+                <th class="border p-2">Email</th>
+                <th class="border p-2">Sujet</th>
+                <th class="border p-2">Statut</th>
+                <th class="border p-2">Lu ?</th>
+                <th class="border p-2">Date</th>
+                <th class="border p-2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($messages as $msg)
+                <tr class="{{ !$msg->is_read ? 'bg-pink-50' : '' }}">
+                    <td class="border p-2">
+                        {{ $msg->company_name ?? '-' }}
+                    </td>
+                    <td class="border p-2 font-semibold">
+                        {{ $msg->name }}
+                    </td>
+                    <td class="border p-2 text-sm text-gray-600">
+                        {{ $msg->email }}
+                    </td>
+                    <td class="border p-2">
+                        {{ $msg->subject ?? '—' }}
+                    </td>
+                    <td class="border p-2">
+                        <span class="px-2 py-1 rounded text-xs
+                            {{ $msg->status === 'nouveau' ? 'bg-blue-100 text-blue-700' : '' }}
+                            {{ $msg->status === 'lu' ? 'bg-green-100 text-green-700' : '' }}
+                            {{ $msg->status === 'répondu' ? 'bg-yellow-100 text-yellow-700' : '' }}">
+                            {{ ucfirst($msg->status) }}
+                        </span>
+                    </td>
+                    <td class="border p-2 text-center">
+                        @if($msg->is_read)
+                            ✅
+                        @else
+                            ❌
+                        @endif
+                    </td>
+                    <td class="border p-2 text-sm text-gray-500">
+                        {{ $msg->created_at->format('d/m/Y H:i') }}
+                    </td>
+                    <td class="border p-2 text-sm space-x-2">
+                        <a href="{{ route('admin.contacts.show', $msg->id) }}" class="text-blue-600">Voir</a>
+                        @if(!$msg->is_read)
+                            <a href="{{ route('admin.contacts.markAsRead', $msg->id) }}" class="text-green-600">Marquer lu</a>
+                        @else
+                            <a href="{{ route('admin.contacts.markAsUnread', $msg->id) }}" class="text-yellow-600">Marquer non lu</a>
+                        @endif
+                        <form action="{{ route('admin.contacts.destroy', $msg->id) }}" method="POST" class="inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-red-600" onclick="return confirm('Supprimer ce message ?')">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="8" class="p-4 text-center text-gray-500">
+                        Aucun message reçu.
+                    </td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
+</div>
 @endsection

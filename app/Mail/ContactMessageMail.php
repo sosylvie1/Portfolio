@@ -21,7 +21,11 @@ class ContactMessageMail extends Mailable
     public function build()
     {
         return $this->from(config('mail.from.address'), config('mail.from.name'))
+                    ->replyTo($this->messageData->email) // on met seulement l’email (sinon Roundcube affiche juste le nom)
                     ->subject('📩 Nouveau message depuis le site portfolio')
-                    ->view('emails.contact-message');
+                    ->view('emails.contact-message')
+                    ->with([
+                        'messageData' => $this->messageData,
+                    ]);
     }
 }
