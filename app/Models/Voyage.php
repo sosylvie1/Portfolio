@@ -4,17 +4,31 @@
    namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
+/**
+     * voyage peut avoir plusieurs photos associées.
+     */
 
 class Voyage extends Model
 {
-    protected $fillable = ['pays', 'annee', 'photo', 'description', 'photos'];
+    use HasFactory;
 
-    protected $casts = [
-        'photos' => 'array',
+    protected $fillable = [
+        'pays',
+        'annee',
+        'photo',
+        'description',
     ];
+
+    /**
+     * Relation : un voyage possède plusieurs photos
+     */
+    public function photos()
+    {
+        return $this->hasMany(VoyagePhoto::class);
+    }
 }
-
-
 
 
 

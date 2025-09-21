@@ -5,7 +5,8 @@
 @section('content')
     <!-- Section avec fond pastel -->
     <section class="bg-gradient-to-b from-pink-50 via-gray-50 to-pink-100 py-12">
-        <div class="container mx-auto px-6 lg:px-16" x-data="{ open: false, images: [], current: 0 }">
+        <div class="container mx-auto px-6 lg:px-16" 
+             x-data="{ open: false, images: [], current: 0 }">
 
             <!-- H1 unique -->
             <h1 class="text-3xl sm:text-4xl font-bold mb-6 text-center text-gray-800">
@@ -20,8 +21,12 @@
             <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
                 @foreach ($voyages as $voyage)
                     @php
-                        $photos = $voyage->photos ? json_decode($voyage->photos, true) : [];
-                        $allImages = array_filter(array_merge([$voyage->photo], $photos));
+                        // On construit la liste des images (photo principale + toutes les autres liées)
+                        $allImages = [['src' => $voyage->photo, 'caption' => $voyage->description]];
+
+                        foreach ($voyage->photos()->get() as $photo) {
+                            $allImages[] = ['src' => $photo->src, 'caption' => $photo->caption];
+                        }
                     @endphp
 
                     <article class="bg-white rounded-xl shadow-md hover:shadow-lg transition overflow-hidden flex flex-col">
@@ -35,8 +40,8 @@
                                     type="image/webp">
                                 <img src="{{ asset($voyage->photo) }}"
                                     alt="Voyage au {{ $voyage->pays }} en {{ $voyage->annee }}"
-                                    class="protected-image w-full h-full object-cover" width="600" height="400"
-                                    loading="lazy" decoding="async">
+                                    class="protected-image w-full h-full object-cover"
+                                    width="600" height="400" loading="lazy" decoding="async">
                             </picture>
                             <div class="watermark">© Sylvie Seguinaud</div>
                             <figcaption id="caption-{{ $voyage->id }}" class="sr-only">
@@ -75,24 +80,24 @@
                         :disabled="current === 0" aria-label="Photo précédente">⬅</button>
 
                     <!-- Image principale -->
-                    <figure class="photo-container max-h-[90vh] max-w-full flex items-center justify-center relative">
-                        <template x-if="images.length > 0">
-                            <picture>
-                                <source
-                                    :srcset="images[current] ? '/' + images[current].replace(/\.(jpg|jpeg|png)$/i, '.webp') :
-                                        '/images/placeholder.webp'"
-                                    type="image/webp">
-                                <img :src="images[current] ? '/' + images[current] : '/images/placeholder.webp'"
-                                    alt="Photo de voyage affichée dans la lightbox"
-                                    class="protected-image max-h-[90vh] max-w-full object-contain rounded-lg shadow-lg"
-                                    width="1200" height="800" loading="lazy" decoding="async">
-                            </picture>
-                        </template>
-                        <div class="watermark">© Sylvie Seguinaud</div>
-                        <figcaption id="caption-lightbox" class="sr-only">
-                            Photo du voyage sélectionné
-                        </figcaption>
-                    </figure>
+                    <!-- Image principale -->
+<figure class="photo-container max-h-[90vh] max-w-full flex flex-col items-center justify-center relative">
+    <template x-if="images.length > 0">
+        <picture>
+            <source :srcset="images[current].src.replace(/\.(jpg|jpeg|png)$/i, '.webp')" type="image/webp">
+            <img :src="'/' + images[current].src"
+                 :alt="images[current].caption"
+                 class="protected-image max-h-[80vh] max-w-full object-contain rounded-lg shadow-lg"
+                 width="1200" height="800" loading="lazy" decoding="async">
+        </picture>
+    </template>
+
+    <!-- ✅ Légende en dessous de l'image -->
+    <figcaption class="text-gray-200 text-center mt-4 px-4">
+        <span x-text="images[current].caption"></span>
+    </figcaption>
+</figure>
+
 
                     <!-- Bouton suivant -->
                     <button @click="if (current < images.length - 1) { current++ }"
@@ -105,5 +110,6 @@
         </div>
     </section>
 @endsection
+
 
 {{-- 🚫 CSS inline supprimé → déplacé dans app.css --}}
