@@ -89,7 +89,7 @@ class VoyageSeeder extends Seeder
     ['src' => 'images/voyages/colombie9R.webp',  'caption' => 'Émeraude dans la roche : la nature a de l’éclat 💎'],
     ['src' => 'images/voyages/colombie10R.webp', 'caption' => 'Émeraude de Muzo, sortie directe de la mine — j’aurais dû négocier une bague 💍'],
     ['src' => 'images/voyages/colombie11R.webp', 'caption' => 'Maïs grillé : simple, parfait, addictif 🌽🔥'],
-    ['src' => 'images/voyages/colombie12R.jpg', 'caption' => 'Je n\'ai pas pu résister 😉'],
+    ['src' => 'images/voyages/colombie12R.webp', 'caption' => 'Je n\'ai pas pu résister 😉'],
    
    
     ['src' => 'images/voyages/colombie16.webp', 'caption' => 'Allée paisible à Nemocón : respiration profonde et déclic photo 🏞️'],

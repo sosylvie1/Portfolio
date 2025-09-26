@@ -9,11 +9,14 @@
 
             <!-- H1 unique -->
             <h1 class="text-3xl sm:text-4xl font-bold mb-6 text-center text-gray-800">
-                🌍 À la rencontre de pays et de ses habitants
+                Des escales professionnelles de plusieurs années, qui ont façonné mon parcours et enrichi ma vision du
+                monde.
             </h1>
 
             <p class="text-lg font-medium mb-10 text-center text-gray-700">
-                Un minuscule extrait parmi des milliers de photos prises dans tous ces pays
+
+                29 000 photos dorment dans mes archives… en voici quelques-unes, fragments d’histoires et d’émotions de mes
+                escales de vie.
             </p>
 
             <!-- Grille des voyages -->
