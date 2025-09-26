@@ -5,8 +5,7 @@
 @section('content')
     <!-- Section avec fond pastel -->
     <section class="bg-gradient-to-b from-pink-50 via-gray-50 to-pink-100 py-12">
-        <div class="container mx-auto px-6 lg:px-16" 
-             x-data="{ open: false, images: [], current: 0 }">
+        <div class="container mx-auto px-6 lg:px-16" x-data="{ open: false, images: [], current: 0 }">
 
             <!-- H1 unique -->
             <h1 class="text-3xl sm:text-4xl font-bold mb-6 text-center text-gray-800">
@@ -40,8 +39,8 @@
                                     type="image/webp">
                                 <img src="{{ asset($voyage->photo) }}"
                                     alt="Voyage au {{ $voyage->pays }} en {{ $voyage->annee }}"
-                                    class="protected-image w-full h-full object-cover"
-                                    width="600" height="400" loading="lazy" decoding="async">
+                                    class="protected-image w-full h-full object-cover" width="600" height="400"
+                                    loading="lazy" decoding="async">
                             </picture>
                             <div class="watermark">© Sylvie Seguinaud</div>
                             <figcaption id="caption-{{ $voyage->id }}" class="sr-only">
@@ -79,24 +78,35 @@
                                    disabled:opacity-40 disabled:cursor-not-allowed z-50"
                         :disabled="current === 0" aria-label="Photo précédente">⬅</button>
 
-                    <!-- Image principale -->
-                    <!-- Image principale -->
-<figure class="photo-container max-h-[90vh] max-w-full flex flex-col items-center justify-center relative">
-    <template x-if="images.length > 0">
-        <picture>
-            <source :srcset="images[current].src.replace(/\.(jpg|jpeg|png)$/i, '.webp')" type="image/webp">
-            <img :src="'/' + images[current].src"
-                 :alt="images[current].caption"
-                 class="protected-image max-h-[80vh] max-w-full object-contain rounded-lg shadow-lg"
-                 width="1200" height="800" loading="lazy" decoding="async">
-        </picture>
-    </template>
 
-    <!-- ✅ Légende en dessous de l'image -->
-    <figcaption class="text-gray-200 text-center mt-4 px-4">
-        <span x-text="images[current].caption"></span>
-    </figcaption>
-</figure>
+                    <!-- Image principale -->
+                    <!-- ✅ Image + légende -->
+                    <!-- ✅ Image + légende responsive -->
+                    <figure class="photo-container flex flex-col items-center justify-center relative w-full">
+                        <template x-if="images.length > 0">
+                            <picture>
+                                <source :srcset="images[current].src.replace(/\.(jpg|jpeg|png)$/i, '.webp')"
+                                    type="image/webp">
+                                <img :src="'/' + images[current].src" :alt="images[current].caption"
+                                    class="protected-image max-h-[80vh] sm:max-h-[85vh] md:max-h-[90vh] 
+                        w-auto max-w-full object-contain rounded-lg shadow-lg"
+                                    loading="lazy" decoding="async">
+                            </picture>
+                        </template>
+
+                        <!-- ✅ Légende toujours lisible -->
+                        <figcaption
+                            class="text-white bg-black/70 rounded px-3 py-2 mt-3 
+                       text-center text-sm sm:text-base md:text-lg font-medium leading-snug w-full max-w-4xl">
+                            <span x-text="images[current]?.caption"></span>
+                        </figcaption>
+                    </figure>
+
+
+
+
+                    <div class="watermark">© Sylvie Seguinaud</div>
+                    </figure>
 
 
                     <!-- Bouton suivant -->

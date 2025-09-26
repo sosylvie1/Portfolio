@@ -52,6 +52,9 @@
                         <a href="{{ route('messages.supprimes') }}"
                             class="block px-3 py-1 rounded hover:bg-gray-100 transition" @click="open=false">🗑️
                             Supprimés</a>
+                        <a href="{{ route('messages.create') }}"
+                            class="block px-3 py-1 rounded hover:bg-gray-100 transition" @click="open=false">📝
+                            Nouveau</a>
                     </div>
                 </div>
                 {{-- Profil --}}

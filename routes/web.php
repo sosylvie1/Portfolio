@@ -62,15 +62,12 @@ Route::get('/cgu', fn () => view('pages.cgu'))->name('cgu');
 // Projets côté public
 Route::get('/projets', [ProjectController::class, 'index'])->name('projets.index');
 
-// Formulaire de contact public
-// Route::get('/contact', [ContactController::class, 'showForm'])->name('contact.show');
-// Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
+
 // Formulaire de contact public
 Route::get('/contact', [ContactController::class, 'showForm'])->name('contact');
 Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
 
-Route::get('/messages/create', [ContactController::class, 'create'])->name('messages.create');
-Route::post('/messages', [ContactController::class, 'store'])->name('messages.store');
+
 
 
 // --- CV PUBLIC ---
@@ -165,16 +162,20 @@ Route::middleware(['auth', 'is_admin'])
 
     // // ✅ Route pour répondre
     // Route::post('/contacts/{message}/reply', [ContactAdminController::class, 'reply'])->name('contacts.reply');
-        // Gestion utilisateurs
+    
+    //     // Gestion utilisateurs
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
         Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
         Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+        
+        // gestion messages
     
         Route::get('/contacts', [ContactMessageController::class, 'index'])->name('contacts.index');
         Route::get('/contacts/{message}', [ContactMessageController::class, 'show'])->name('contacts.show');
         Route::delete('/contacts/{message}', [ContactMessageController::class, 'destroy'])->name('contacts.destroy');
-        Route::patch('/contacts/{message}/mark-as-read', [ContactMessageController::class, 'markAsRead'])->name('contacts.markAsRead');
+       Route::patch('/contacts/{message}/mark-as-read', [ContactMessageController::class, 'markAsRead'])->name('contacts.markAsRead');
 Route::patch('/contacts/{message}/mark-as-unread', [ContactMessageController::class, 'markAsUnread'])->name('contacts.markAsUnread');
+
         Route::post('/contacts/{message}/reply', [ContactMessageController::class, 'reply'])->name('contacts.reply');
     
 
