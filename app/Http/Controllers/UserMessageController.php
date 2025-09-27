@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ContactMessage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ContactMessageMail;
 
 class UserMessageController extends Controller
 {
@@ -15,38 +17,34 @@ class UserMessageController extends Controller
     {
         return view('user.messages.create');
     }
+
     /**
- * 📑 Page d'accueil des messages (index)
- */
-/**
- * 📑 Page d'accueil des messages (index)
- */
-public function index()
-{
-    $user = Auth::user();
+     * 📑 Page d'accueil des messages (index)
+     */
+    public function index()
+    {
+        $user = Auth::user();
 
-    // Tous les messages (reçus + envoyés)
-    $messages = ContactMessage::where(function ($q) use ($user) {
-            $q->where('user_id', $user->id)
-              ->orWhere('recipient_id', $user->id);
-        })
-        ->latest()
-        ->get();
+        // Tous les messages (reçus + envoyés)
+        $messages = ContactMessage::where(function ($q) use ($user) {
+                $q->where('user_id', $user->id)
+                  ->orWhere('recipient_id', $user->id);
+            })
+            ->latest()
+            ->get();
 
-    // Messages envoyés
-    $sentMessages = ContactMessage::where('user_id', $user->id)
-        ->latest()
-        ->get();
+        // Messages envoyés
+        $sentMessages = ContactMessage::where('user_id', $user->id)
+            ->latest()
+            ->get();
 
-    // Messages reçus
-    $receivedMessages = ContactMessage::where('recipient_id', $user->id)
-        ->latest()
-        ->get();
+        // Messages reçus
+        $receivedMessages = ContactMessage::where('recipient_id', $user->id)
+            ->latest()
+            ->get();
 
-    return view('user.messages.index', compact('messages', 'sentMessages', 'receivedMessages'));
-}
-
-
+        return view('user.messages.index', compact('messages', 'sentMessages', 'receivedMessages'));
+    }
 
     /**
      * 📩 Envoi d’un nouveau message
@@ -58,7 +56,8 @@ public function index()
             'message' => 'required|string|min:5',
         ]);
 
-        ContactMessage::create([
+        // Enregistrement en base
+        $message = ContactMessage::create([
             'company_name' => null,
             'name'         => Auth::user()->name,
             'email'        => Auth::user()->email,
@@ -67,10 +66,15 @@ public function index()
             'user_id'      => Auth::id(),
             'recipient_id' => 1, // ⚡ ID admin
             'is_read'      => 0,
+            'status'       => 'sent',
         ]);
 
+        // Envoi du mail vers la boîte Roundcube
+        Mail::to('contact@sylvie-seguinaud.fr')
+            ->send(new ContactMessageMail($message));
+
         return redirect()->route('messages.envoyes')
-                         ->with('success', '✅ Votre message a bien été envoyé.');
+                         ->with('success', '✅ Votre message a bien été envoyé et transmis par mail.');
     }
 
     /**
@@ -164,7 +168,8 @@ public function index()
             ->where('id', $id)
             ->firstOrFail();
 
-        ContactMessage::create([
+        // Sauvegarde en base
+        $reply = ContactMessage::create([
             'company_name' => 'Utilisateur',
             'name'         => Auth::user()->name,
             'email'        => Auth::user()->email,
@@ -173,10 +178,15 @@ public function index()
             'user_id'      => Auth::id(),
             'recipient_id' => 1, // ⚡ id admin
             'is_read'      => 0,
+            'status'       => 'sent',
         ]);
 
+        // Envoi du mail vers la boîte Roundcube
+        Mail::to('contact@sylvie-seguinaud.fr')
+            ->send(new ContactMessageMail($reply));
+
         return redirect()->route('messages.envoyes')
-                         ->with('success', '✅ Réponse envoyée à l’admin.');
+                         ->with('success', '✅ Réponse envoyée et transmise par mail.');
     }
 
     /**

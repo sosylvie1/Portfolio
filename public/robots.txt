@@ -1,11 +1,11 @@
 # robots.txt pour le portfolio de Sylvie Seguinaud
 # Indique aux moteurs de recherche comment explorer le site
 
-# Autoriser tous les robots à explorer le site
+# Autoriser tous les robots a explorer le site
 User-agent: *
 Allow: /
 
-# Empêcher l’indexation de certains dossiers techniques de Laravel
+# Empecher l indexation de certains dossiers techniques de Laravel
 Disallow: /vendor/
 Disallow: /storage/
 Disallow: /node_modules/
@@ -14,4 +14,4 @@ Disallow: /routes/
 Disallow: /tests/
 
 # Emplacement du sitemap XML
-Sitemap: https://sylvie-seguinaud.fr/sitemap.xml
+Sitemap: https://portfolio.sylvie-seguinaud.fr/sitemap.xml
